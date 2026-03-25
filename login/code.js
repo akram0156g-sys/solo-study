@@ -1,8 +1,3 @@
-// Redirect already logged-in users
-auth.onAuthStateChanged(function(user) {
-    if (user) window.location.href = "/index.html";
-});
-
 const form = document.querySelector("form");
 const emailInput = document.querySelector("input[type='email']");
 const passwordInput = document.querySelector("input[type='password']");
@@ -29,10 +24,12 @@ form.addEventListener("submit", async function(e) {
         const userCredential = await auth.signInWithEmailAndPassword(email, password);
         const user = userCredential.user;
 
-        // Load their data from Firestore into localStorage
+        // Set localStorage FIRST before anything else
+        localStorage.setItem("loggedIn", "true");
+
+        // Then load Firestore data
         const data = await loadFromFirestore(user.uid);
 
-        localStorage.setItem("loggedIn", "true");
         localStorage.setItem("loggedInUser", JSON.stringify({
             uid: user.uid,
             username: data?.username || "User",
