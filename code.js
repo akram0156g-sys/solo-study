@@ -3,10 +3,14 @@ function updateNavButtons() {
     const loggedIn = localStorage.getItem("loggedIn") === "true";
     const logoutBtn = document.getElementById("logoutBtn");
     const profileLink = document.getElementById("profileLink");
+    const loginLink = document.getElementById("loginLink");
+    const signupLink = document.getElementById("signupLink");
 
     if (loggedIn) {
         if (logoutBtn) logoutBtn.style.display = "inline-block";
         if (profileLink) profileLink.style.display = "inline";
+        if (loginLink) loginLink.style.display = "none";
+        if (signupLink) signupLink.style.display = "none";
     }
 }
 
