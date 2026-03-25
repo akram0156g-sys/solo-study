@@ -22,3 +22,9 @@ document.querySelectorAll(".hero-btn, .grade-card a").forEach(btn => {
         }
     });
 });
+// Logout function
+document.getElementById("logoutBtn")?.addEventListener("click", function () {
+    localStorage.removeItem("loggedIn");
+    localStorage.removeItem("loggedInUser");
+    window.location.href = "/index.html";
+});
