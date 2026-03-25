@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="google-site-verification" content="SRAJrtK3gTxb3VkaIrPc9mM7M-bwMdFP7Ja6rOeyoOU" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>home</title>
+        <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav class="home-nav">
+    <h1 class="logo">Solo Study</h1>
+    <div class="nav-right">
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="#">Streak</a></li>
+            <li><a href="../lessons/index.html">Lessons</a></li>
+            <li><a href="../contact/index.html">Contact</a></li>
+            <li><a href="../profile/index.html" id="profileLink" style="display:none">Profile</a></li>
+        </ul>
+        <button id="logoutBtn" style="display:none; background:#ef4444;" class="nav-btn">Logout</button>
+    </div>
+</nav>
+<section class="hero">
+    <div class="hero-content">
+        <h1>Master from grade 1 through grade 11 subjects the Smart Way</h1>
+        <p>Interactive flashcards + practice exercises</p>
+        <a href="../lessons/index.html" class="hero-btn">Start learning</a>
+    </div>
+</section>
+<section class="features">
+    <h2>How Solo Study Works</h2>
+
+    <div class="feature-cards">
+        <div class="card">
+            <h3>🎯 Visual Flashcards</h3>
+            <p>Understand math concepts clearly with visual explanations.</p>
+        </div>
+
+        <div class="card">
+            <h3>📝 Smart Exercises</h3>
+            <p>Practice with interactive exercises and instant feedback.</p>
+        </div>
+
+        <div class="card">
+            <h3>🏆 EXP & Streak</h3>
+            <p>Earn XP and stay consistent with daily streak rewards.</p>
+        </div>
+    </div>
+</section>
+<section class="grades">
+    <h2>Choose Your Grade</h2>
+
+    <div class="grade-cards">
+        <div class="grade-card active">
+            <h3>Grade 4</h3>
+            <p class="p">Fully Available</p>
+            <a href="../lessons/index.html" class="a">Start</a>
+        </div>
+
+        <div class="grade-card locked">
+            <h3>Grade 5</h3>
+            <p>Coming Soon</p>
+        </div>
+
+        <div class="grade-card locked">
+            <h3>Grade 3</h3>
+            <p>Coming Soon</p>
+        </div>
+    </div>
+</section>
+ <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+  <script src="/firebase-config.js"></script>
+  <script src="code.js"></script>
+  <script src="code.js"></script>
+</body>
+</html>

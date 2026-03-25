@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Solo Study | Grade 4 Math - Place Value</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+
+<!-- TOP NAVBAR -->
+<nav class="home-nav">
+  <h1 class="logo">Solo Study</h1>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="/index.html">Home</a></li>
+      <li><a href="#">Streak</a></li>
+      <li><a href="/lessons/index.html">Lessons</a></li>
+      <li><a href="/contact/index.html">Contact</a></li>
+    </ul>
+    <div class="dashboard" style="display:flex; gap:15px; margin-left:20px; align-items:center;">
+      <div class="card"><h3>XP</h3><p id="xp-display">0</p></div>
+      <div class="card"><h3>Level</h3><p id="level-display">1</p></div>
+      <div class="card"><h3>Score</h3><p id="unit-score">0%</p></div>
+      <div class="card" style="min-width:150px;">
+        <div class="progress-container" style="margin-top:5px;">
+          <div id="progress-bar"></div>
+        </div>
+        <p id="progress-text" style="margin:0; font-size:12px; text-align:center;">0 / 4</p>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="layout">
+
+  <!-- LEFT SIDEBAR -->
+  <nav class="sidebar">
+    <h2>Grade 4 Math</h2>
+    <h3>Place Value</h3>
+    <ul>
+      <li onclick="showContent('video-1')">Lesson 1 Video</li>
+      <li onclick="showContent('visual-flashcards-1')">Lesson 1 Visual Flashcards</li>
+      <li onclick="showContent('Exercise-1')">Lesson 1 Exercise</li>
+
+      <li onclick="showContent('video-2')">Lesson 2 Video</li>
+      <li onclick="showContent('visual-flashcards-2')">Lesson 2 Visual Flashcards</li>
+      <li onclick="showContent('Exercise-2')">Lesson 2 Exercise</li>
+
+      <li onclick="showContent('video-3')">Lesson 3 Video</li>
+      <li onclick="showContent('visual-flashcards-3')">Lesson 3 Visual Flashcards</li>
+      <li onclick="showContent('Exercise-3')">Lesson 3 Exercise</li>
+
+      <li onclick="showContent('video-4')">Lesson 4 Video</li>
+      <li onclick="showContent('visual-flashcards-4')">Lesson 4 Visual Flashcards</li>
+      <li onclick="showContent('Exercise-4')">Lesson 4 Exercise</li>
+    </ul>
+    <h3>Review</h3>
+    <ul><li onclick="showContent('final-review')">Final Review</li></ul>
+  </nav>
+
+  <!-- RIGHT CONTENT -->
+  <main class="content">
+
+    <!-- LESSON 1 VIDEO -->
+    <div id="video-1" class="content-box" data-lesson="lesson1">
+      <h2>Lesson 1 Video</h2>
+      <video width="600" controls>
+        <source src="/vids/lesson1.mov" type="video/mp4">
+      </video>
+    </div>
+
+    <!-- LESSON 1 FLASHCARDS -->
+    <div id="visual-flashcards-1" class="content-box visual-flashcards" data-lesson="lesson1">
+      <h2>Lesson 1 Visual Flashcards</h2>
+      <h3 class="number"></h3>
+      <div class="blocks">
+        <div class="column"><h3>Hundreds</h3><div class="hundreds"></div></div>
+        <div class="column"><h3>Tens</h3><div class="tens"></div></div>
+        <div class="column"><h3>Ones</h3><div class="ones"></div></div>
+      </div>
+      <button class="next-btn">Next</button>
+    </div>
+
+    <!-- LESSON 1 EXERCISE -->
+    <div id="Exercise-1" class="content-box" data-lesson="lesson1">
+      <h2>Lesson 1 Exercise</h2>
+      <h3 class="question-number"></h3>
+      <div class="blocks">
+        <div class="column"><h3>Hundreds</h3><div class="hundreds"></div></div>
+        <div class="column"><h3>Tens</h3><div class="tens"></div></div>
+        <div class="column"><h3>Ones</h3><div class="ones"></div></div>
+      </div>
+      <p class="instruction">Type the number shown using the blocks above:</p>
+      <input type="number" class="answer" placeholder="Type the number here"><br><br>
+      <button class="check-btn">Check Answer</button>
+      <p class="result"></p>
+    </div>
+
+    <!-- LESSON 2 VIDEO -->
+    <div id="video-2" class="content-box" data-lesson="lesson2">
+      <h2>Lesson 2 Video</h2>
+      <video width="600" controls>
+        <source src="/vids/lesson2.mov" type="video/mp4">
+      </video>
+    </div>
+
+    <!-- LESSON 2 FLASHCARDS -->
+    <div id="visual-flashcards-2" class="content-box visual-flashcards" data-lesson="lesson2">
+      <h2>Lesson 2 Visual Flashcards</h2>
+      <h3 class="word-number"></h3>
+      <button class="next-btn">Next</button>
+    </div>
+
+    <!-- LESSON 2 EXERCISE -->
+    <div id="Exercise-2" class="content-box" data-lesson="lesson2">
+      <h2>Lesson 2 Exercise</h2>
+      <h3 class="question-number"></h3>
+      <p class="instruction">Type the number for the following words:</p>
+      <h3 class="current-question"></h3>
+      <input type="text" class="answer" placeholder="Type the number here"><br><br>
+      <button class="check-btn">Check Answer</button>
+      <p class="result"></p>
+    </div>
+
+    <!-- LESSON 3 VIDEO -->
+    <div id="video-3" class="content-box" data-lesson="lesson3">
+      <h2>Lesson 3 Video</h2>
+      <video width="600" controls>
+        <source src="/vids/lesson3.mov" type="video/mp4">
+      </video>
+    </div>
+
+    <!-- LESSON 3 FLASHCARDS -->
+    <div id="visual-flashcards-3" class="content-box visual-flashcards" data-lesson="lesson3">
+      <h2>Lesson 3 Flashcards</h2>
+      <h3 class="flashcard-question"></h3>
+      <h3 class="flashcard-answer"></h3>
+      <br><button class="next-btn">Next</button>
+    </div>
+
+    <!-- LESSON 3 EXERCISE -->
+    <div id="Exercise-3" class="content-box" data-lesson="lesson3">
+      <h2>Lesson 3 Exercise</h2>
+      <h3 class="question-number"></h3>
+      <p class="instruction">Multiply the number.</p>
+      <h3 class="current-question"></h3>
+      <input type="number" class="answer" placeholder="Type your answer"><br><br>
+      <button class="check-btn">Check Answer</button>
+      <p class="result"></p>
+    </div>
+
+    <!-- LESSON 4 VIDEO -->
+    <div id="video-4" class="content-box" data-lesson="lesson4">
+      <h2>Lesson 4 Video</h2>
+      <video width="600" controls>
+        <source src="/vids/lesson4.mov" type="video/mp4">
+      </video>
+    </div>
+
+    <!-- LESSON 4 FLASHCARDS -->
+    <div id="visual-flashcards-4" class="content-box visual-flashcards" data-lesson="lesson4">
+      <h2>Lesson 4 Flashcards</h2>
+      <h3 class="flashcard-question"></h3>
+      <h3 class="flashcard-answer"></h3>
+      <button class="reveal-btn">Show Answer</button><br><br>
+      <button class="next-btn">Next</button>
+    </div>
+
+    <!-- LESSON 4 EXERCISE -->
+    <div id="Exercise-4" class="content-box" data-lesson="lesson4">
+      <h2>Lesson 4 Exercise</h2>
+      <h3 class="question-number"></h3>
+      <p class="instruction">Divide the number.</p>
+      <h3 class="current-question"></h3>
+      <input type="number" class="answer" placeholder="Type your answer"><br><br>
+      <button class="check-btn">Check Answer</button>
+      <p class="result"></p>
+    </div>
+
+    <!-- FINAL REVIEW -->
+    <div id="final-review" class="content-box">
+      <h2>Final Review Test</h2>
+      <h3 class="question-number"></h3>
+      <p class="instruction">Answer the question below:</p>
+      <h3 class="current-question"></h3>
+      <input type="number" class="answer" placeholder="Type your answer"><br><br>
+      <button class="check-btn">Check Answer</button>
+      <p class="result"></p>
+    </div>
+
+  </main>
+</div>
+
+<script src="../code.js"></script>
+</body>
+</html>

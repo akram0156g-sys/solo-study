@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign Up - Solo Study</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="container">
+
+  <div class="card">
+    <h1>Solo Study</h1>
+    <h2>Create Account</h2>
+
+    <form>
+
+      <div class="input-group">
+        <label>Username</label>
+        <input type="text" placeholder="Enter username" required>
+      </div>
+
+      <div class="input-group">
+        <label>Email</label>
+        <input type="email" placeholder="Enter email" required>
+      </div>
+
+      <div class="input-group">
+        <label>Password</label>
+        <input type="password" placeholder="Enter password" required>
+      </div>
+
+      <div class="input-group">
+        <label>Confirm Password</label>
+        <input type="password" placeholder="Confirm password" required>
+      </div>
+
+      <button type="submit" class="signup-btn">Sign Up</button>
+
+      <p class="login-text">
+        Already have an account? <a href="../login/index.html">Login</a>
+      </p>
+
+    </form>
+  </div>
+
+</div>
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
+<script src="/firebase-config.js"></script>
+<script src="code.js"></script>
+</body>
+</html>
