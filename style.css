@@ -243,3 +243,107 @@
 .p{
     margin-bottom: 20px;
 }
+
+
+/* ===== HAMBURGER BUTTON ===== */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 5px;
+}
+
+.hamburger span {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background: #111;
+    border-radius: 3px;
+    transition: 0.3s;
+}
+
+/* ===== MOBILE STYLES ===== */
+@media (max-width: 768px) {
+
+    .home-nav {
+        padding: 15px 20px;
+        position: relative;
+    }
+
+    .logo {
+        font-size: 22px;
+    }
+
+    .hamburger {
+        display: flex;
+    }
+
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 65px;
+        left: 0;
+        right: 0;
+        background: white;
+        padding: 20px;
+        gap: 15px;
+        border-bottom: 1px solid #eee;
+        z-index: 999;
+        box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+    }
+
+    .nav-links.open {
+        display: flex;
+    }
+
+    .nav-btn {
+        font-size: 14px;
+        padding: 8px 14px;
+    }
+
+    .hero {
+        height: auto;
+        padding: 60px 20px;
+    }
+
+    .hero-content h1 {
+        font-size: 28px;
+    }
+
+    .hero-content p {
+        font-size: 16px;
+    }
+
+    .features {
+        padding: 50px 20px;
+    }
+
+    .features h2 {
+        font-size: 26px;
+        margin-bottom: 30px;
+    }
+
+    .card {
+        width: 100%;
+        max-width: 340px;
+    }
+
+    .grades {
+        padding: 50px 20px;
+    }
+
+    .grades h2 {
+        font-size: 26px;
+        margin-bottom: 30px;
+    }
+
+    .grade-card {
+        width: 100%;
+        max-width: 340px;
+        padding: 30px;
+    }
+}
