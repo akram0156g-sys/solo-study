@@ -4,6 +4,7 @@
     padding: 0;
     box-sizing: border-box;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    -webkit-tap-highlight-color: transparent;
 }
 
 /* NAVBAR */
@@ -44,14 +45,9 @@
     transition: 0.3s;
 }
 
-.nav-links a:hover {
-    color: #22c55e;
-}
+.nav-links a:hover { color: #22c55e; }
 
-.nav-buttons {
-    display: flex;
-    gap: 15px;
-}
+.nav-buttons { display: flex; gap: 15px; }
 
 .nav-btn {
     background-color: #22c55e;
@@ -64,9 +60,7 @@
     transition: 0.3s;
 }
 
-.nav-btn:hover {
-    background-color: #16a34a;
-}
+.nav-btn:hover { background-color: #16a34a; }
 
 .nav-sign-in {
     background-color: white;
@@ -79,8 +73,26 @@
     transition: 0.3s;
 }
 
-.nav-sign-in:hover {
-    background-color: #f2f2f2;
+.nav-sign-in:hover { background-color: #f2f2f2; }
+
+/* HAMBURGER */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 5px;
+}
+
+.hamburger span {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background: #111;
+    border-radius: 3px;
+    transition: 0.3s;
 }
 
 /* SECTIONS */
@@ -114,7 +126,7 @@
     padding: 35px 30px;
     width: 280px;
     border-radius: 18px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     text-align: center;
     position: relative;
@@ -122,7 +134,7 @@
 
 .grade-card.active:hover {
     transform: translateY(-10px);
-    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 12px 25px rgba(0,0,0,0.12);
 }
 
 /* BUTTONS */
@@ -143,8 +155,24 @@
 }
 
 .grade-card button:hover,
-.grade-card a.unit-btn:hover {
-    background: #16a34a;
+.grade-card a.unit-btn:hover { background: #16a34a; }
+
+.back-btn {
+    background: none;
+    border: 2px solid #22c55e;
+    color: #22c55e;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    margin: 16px;
+    display: inline-block;
+    transition: all 0.3s;
+}
+
+.back-btn:hover {
+    background: #22c55e;
+    color: white;
 }
 
 /* UNIT TEXT */
@@ -156,9 +184,7 @@
 
 /* HIDDEN SECTIONS */
 .grade-4-selection,
-.grade-4-math-units {
-    display: none;
-}
+.grade-4-math-units { display: none; }
 
 /* PROGRESS BAR */
 .progress-bar {
@@ -197,40 +223,82 @@
     color: #111;
 }
 
-/* RESPONSIVE */
+/* =====================
+   TABLET (max 1024px)
+===================== */
 @media (max-width: 1024px) {
-    .grade-cards {
-        gap: 30px;
-        justify-content: center;
-    }
+    .grade-cards { gap: 30px; }
 }
 
+/* =====================
+   MOBILE (max 768px)
+===================== */
 @media (max-width: 768px) {
-    .nav-right {
+
+    .home-nav {
+        padding: 15px 20px;
+        position: relative;
+    }
+
+    .hamburger { display: flex; }
+
+    .nav-links {
+        display: none;
         flex-direction: column;
+        position: absolute;
+        top: 65px;
+        left: 0;
+        right: 0;
+        background: white;
+        padding: 20px;
         gap: 15px;
+        border-bottom: 1px solid #eee;
+        z-index: 999;
+        box-shadow: 0 5px 10px rgba(0,0,0,0.1);
     }
-    .grade-cards {
-        gap: 20px;
+
+    .nav-links.open { display: flex; }
+
+    .nav-right { gap: 10px; }
+
+    .nav-btn,
+    .nav-sign-in {
+        font-size: 14px;
+        padding: 8px 16px;
     }
+
+    .grades,
+    .grade-4-selection,
+    .grade-4-math-units {
+        padding: 40px 16px;
+    }
+
+    .grades h2,
+    .grade-4-selection h2,
+    .grade-4-math-units h2 {
+        font-size: clamp(22px, 6vw, 30px);
+        margin-bottom: 30px;
+    }
+
+    .grade-cards { gap: 20px; }
+
     .grade-card {
-        width: 90%;
+        width: 100%;
+        max-width: 340px;
+        padding: 25px 20px;
     }
-}
-.back-btn {
-    background: none;
-    border: 2px solid #22c55e;
-    color: #22c55e;
-    padding: 8px 16px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 14px;
-    margin: 16px;
-    display: inline-block;
-    transition: all 0.3s;
+
+    .title {
+        font-size: 22px;
+        padding-left: 0;
+        text-align: center;
+    }
 }
 
-.back-btn:hover {
-    background: #22c55e;
-    color: white;
+/* =====================
+   SMALL PHONES (max 420px)
+===================== */
+@media (max-width: 420px) {
+    .logo { font-size: 20px; }
+    .grade-card { padding: 20px 15px; }
 }
