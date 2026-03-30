@@ -1,250 +1,213 @@
-body{
-margin:0;
-font-family:Arial;
+/* RESET */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+    -webkit-tap-highlight-color: transparent;
 }
 
 /* MAIN LAYOUT */
-
-.layout{
-display:flex;
-height:100vh;
+.layout {
+    display: flex;
+    min-height: 100vh;
 }
 
-/* LEFT NAVBAR */
-
-.sidebar{
-width:260px;
-background:#1f2937;
-color:white;
-padding:20px;
-overflow-y:auto;
+/* SIDEBAR */
+.sidebar {
+    width: 260px;
+    background: #1f2937;
+    color: white;
+    padding: 20px;
+    overflow-y: auto;
+    flex-shrink: 0;
 }
 
-.sidebar h2{
-margin-bottom:20px;
+.sidebar h2 { margin-bottom: 20px; }
+
+.sidebar h3 {
+    margin-top: 20px;
+    font-size: 16px;
+    color: #9ca3af;
 }
 
-.sidebar h3{
-margin-top:20px;
-font-size:16px;
-color:#9ca3af;
+.sidebar ul {
+    list-style: none;
+    padding: 0;
 }
 
-.sidebar ul{
-list-style:none;
-padding:0;
+.sidebar li {
+    padding: 10px;
+    margin-bottom: 6px;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: 0.2s;
 }
 
-.sidebar li{
-padding:10px;
-margin-bottom:6px;
-cursor:pointer;
-border-radius:6px;
-transition:0.2s;
+.sidebar li:hover { background: #757575; }
+
+/* CONTENT */
+.content {
+    flex: 1;
+    padding: 40px;
+    background: #f9fafb;
+    overflow-y: auto;
 }
 
-.sidebar li:hover{
-background:#757575;
+/* CONTENT BOX */
+.content-box {
+    display: none;
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    max-width: 500px;
+    margin: 20px auto;
+    text-align: center;
 }
 
-/* RIGHT CONTENT */
-
-.content{
-flex:1;
-padding:40px;
-background:#f9fafb;
+/* NAVBAR */
+.home-nav {
+    background-color: white;
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    border-bottom: 1px solid rgb(200, 200, 200);
+    top: 0;
+    z-index: 1000;
 }
 
-/* HIDE LESSONS */
+.logo { font-size: 28px; }
 
-.content-box{
-display:none;
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 30px;
 }
 
-/* TOP NAVBAR */
-
-.home-nav{
-background-color:white;
-padding:20px 40px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-position:sticky;
-border-bottom:1px solid rgb(200,200,200);
-top:0;
-z-index:1000;
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 25px;
 }
 
-.logo{
-font-size:28px;
+.nav-links a {
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+    transition: 0.3s;
 }
 
-.nav-right{
-display:flex;
-align-items:center;
-gap:30px;
+.nav-links a:hover { color: #00bcd4; }
+
+.nav-buttons { display: flex; gap: 15px; }
+
+.nav-btn {
+    background-color: #22c55e;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 40px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
 }
 
-.nav-links{
-list-style:none;
-display:flex;
-gap:25px;
+.nav-btn:hover { background-color: #16a34a; }
+
+.nav-sign-in {
+    background-color: white;
+    color: black;
+    border: 2px solid rgb(167, 167, 167);
+    padding: 10px 20px;
+    border-radius: 40px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
 }
 
-.nav-links a{
-text-decoration:none;
-color:black;
-font-weight:bold;
-transition:0.3s;
+.nav-sign-in:hover { background-color: rgb(224, 223, 223); }
+
+/* HAMBURGER */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 5px;
 }
 
-.nav-links a:hover{
-color:#00bcd4;
+.hamburger span {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background: #111;
+    border-radius: 3px;
+    transition: 0.3s;
 }
 
-.nav-buttons{
-display:flex;
-gap:15px;
-}
+/* FLASHCARD */
+.flashcard { text-align: center; }
 
-.nav-btn{
-background-color:#22c55e;
-color:white;
-padding:10px 20px;
-border:none;
-border-radius:40px;
-font-weight:bold;
-cursor:pointer;
-}
-
-.nav-btn:hover{
-background-color:#16a34a;
-}
-
-.nav-sign-in{
-background-color:white;
-color:black;
-border:2px solid rgb(167,167,167);
-padding:10px 20px;
-border-radius:40px;
-font-weight:bold;
-cursor:pointer;
-}
-
-.nav-sign-in:hover{
-background-color:rgb(224,223,223);
-}
-
-/* FLASHCARD AREA */
-
-.flashcard{
-text-align:center;
-}
-
-/* BLOCK LAYOUT */
-
-.blocks{
-display:flex;
-justify-content:center;
-gap:60px;
-margin-top:30px;
-}
-
-.column{
-display:flex;
-flex-direction:column;
-align-items:center;
-min-width:120px;
-}
-
-.column h3{
-margin-bottom:10px;
-}
-
-/* BLOCK CONTAINERS */
-
-.hundreds,
-.tens,
-.ones{
-display:flex;
-flex-wrap:wrap;
-justify-content:center;
-}
-
-/* CUBES */
-
-.block{
-width:35px;
-height:35px;
-margin:4px;
-border-radius:6px;
-display:inline-block;
-border:2px solid rgba(0,0,0,0.1);
-}
-
-/* COLORS */
-
-.hundred{
-background:#4a90e2;
-}
-
-.ten{
-background:#50c878;
-}
-
-.one{
-background:#ffb347;
-}
-
-/* NEXT BUTTON */
-
-.next-btn{
-margin-top:30px;
-padding:12px 25px;
-font-size:16px;
-border:none;
-background:#22c55e;
-color:white;
-border-radius:8px;
-cursor:pointer;
-}
-
-.next-btn:hover{
-background:#16a34a;
-}
-
+/* BLOCKS */
 .blocks {
-  display: flex;
-  justify-content: center; /* center columns */
-  gap: 40px; /* space between hundreds/tens/ones */
-  margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-top: 20px;
+    flex-wrap: wrap;
 }
 
 .column {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 80px;
 }
 
 .column h3 {
-  margin-bottom: 10px;
+    margin-bottom: 10px;
+    font-size: 1.1em;
 }
 
-/* Each cube block */
+.hundreds, .tens, .ones {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
 .block {
-  width: 35px;
-  height: 35px;
-  margin: 4px;
-  border-radius: 6px;
-  display: inline-block;
-  border: 2px solid rgba(0,0,0,0.1);
+    width: 35px;
+    height: 35px;
+    margin: 4px;
+    border-radius: 6px;
+    display: inline-block;
+    border: 2px solid rgba(0,0,0,0.1);
 }
 
 .hundred { background: #4a90e2; }
 .ten { background: #50c878; }
 .one { background: #ffb347; }
 
-/* ===================== Exercise Styles ===================== */
+/* NEXT BUTTON */
+.next-btn {
+    margin-top: 30px;
+    padding: 12px 25px;
+    font-size: 16px;
+    border: none;
+    background: #22c55e;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.next-btn:hover { background: #16a34a; }
+
+/* EXERCISE */
 #Exercise-1 {
     padding: 20px;
     background: #fff;
@@ -265,16 +228,7 @@ background:#16a34a;
     justify-content: center;
     gap: 50px;
     margin: 20px 0;
-}
-
-#Exercise-1 .column {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-#Exercise-1 .column h3 {
-    margin-bottom: 10px;
+    flex-wrap: wrap;
 }
 
 #Exercise-1 .block {
@@ -304,7 +258,7 @@ background:#16a34a;
 #Exercise-1 .check-btn {
     padding: 10px 20px;
     font-size: 16px;
-    background-color: #4a90e2;
+    background-color: #4CAF50;
     color: #fff;
     border: none;
     border-radius: 8px;
@@ -313,9 +267,7 @@ background:#16a34a;
     margin: 0 auto;
 }
 
-#Exercise-1 .check-btn:hover {
-    background-color: #357ab8;
-}
+#Exercise-1 .check-btn:hover { background-color: #45a049; }
 
 #Exercise-1 .result {
     margin-top: 15px;
@@ -329,47 +281,8 @@ background:#16a34a;
     text-align: center;
     margin-top: 20px;
 }
-/* ===================== */
-/* Blocks for numbers    */
-/* ===================== */
-.blocks {
-    display: flex;
-    gap: 20px;
-    margin: 15px 0;
-}
 
-.column {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.column h3 {
-    margin-bottom: 10px;
-    font-size: 1.1em;
-}
-
-.block {
-    width: 30px;
-    height: 30px;
-    margin: 2px;
-    border-radius: 5px;
-}
-
-/* Different colors for hundreds, tens, ones */
-.block.hundred {
-    background-color: #FF6B6B; /* red-ish */
-}
-
-.block.ten {
-    background-color: #4ECDC4; /* teal-ish */
-}
-
-.block.one {
-    background-color: #FFD93D; /* yellow-ish */
-}
-
-/* Flashcards */
+/* VISUAL FLASHCARDS */
 .visual-flashcards {
     display: flex;
     flex-direction: column;
@@ -382,97 +295,8 @@ background:#16a34a;
     margin: 5px 0;
 }
 
-.next-btn {
-    padding: 8px 16px;
-    font-size: 1em;
-    border: none;
-    background-color: #1A535C;
-    color: #fff;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background 0.2s ease;
-}
-
-.next-btn:hover {
-    background-color: #4ECDC4;
-}
-
-/* Exercise inputs */
+/* INPUTS */
 input.answer {
-    padding: 6px 10px;
-    font-size: 1em;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-    width: 200px;
-}
-
-.check-btn {
-    padding: 6px 12px;
-    font-size: 1em;
-    border: none;
-    background-color: #FF6B6B;
-    color: #fff;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background 0.2s ease;
-}
-
-.check-btn:hover {
-    background-color: #FF8787;
-}
-
-/* Result text */
-.result {
-    font-weight: bold;
-    margin-top: 10px;
-    min-height: 24px; /* keeps space so layout doesn't jump */
-}
-/* Make Check button green */
-.check-btn {
-    padding: 6px 12px;
-    font-size: 1em;
-    border: none;
-    background-color: #4CAF50;  /* green */
-    color: #fff;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background 0.2s ease;
-}
-
-.check-btn:hover {
-    background-color: #45a049; /* darker green on hover */
-}
-
-/* Make final score green */
-.result.final-score {
-    color: #2e7d32; /* dark green */
-    font-weight: bold;
-    font-size: 1.2em;
-}
-/* Exercise container */
-.content-box{
-    background: white;
-    padding: 25px;
-    border-radius: 10px;
-    max-width: 500px;
-    margin: 20px auto;
-    text-align: center;
-}
-
-/* Question text */
-.current-question{
-    font-size: 28px;
-    margin: 20px 0;
-}
-
-/* Instruction text */
-.instruction{
-    font-size: 16px;
-    color: #555;
-}
-
-/* Input field */
-.answer{
     padding: 10px;
     font-size: 18px;
     width: 180px;
@@ -481,156 +305,158 @@ input.answer {
     text-align: center;
 }
 
-/* Green check button */
-.check-btn{
+/* CHECK BUTTON */
+.check-btn {
     margin-top: 10px;
     padding: 10px 20px;
     font-size: 16px;
-    background-color: #4CAF50;
-    color: white;
     border: none;
+    background-color: #4CAF50;
+    color: #fff;
     border-radius: 6px;
     cursor: pointer;
+    transition: background 0.2s ease;
 }
 
-.check-btn:hover{
-    background-color: #45a049;
-}
+.check-btn:hover { background-color: #45a049; }
 
-/* Result text */
-.result{
+/* RESULT */
+.result {
     margin-top: 15px;
     font-size: 18px;
     font-weight: bold;
+    min-height: 24px;
 }
 
-/* Final score style */
-.final-score{
-    color: green;
+.result.final-score,
+.final-score {
+    color: #2e7d32;
     font-size: 22px;
+    font-weight: bold;
 }
-.flashcard-question{
+
+.current-question {
+    font-size: 28px;
+    margin: 20px 0;
+}
+
+.instruction {
+    font-size: 16px;
+    color: #555;
+}
+
+.flashcard-question {
     font-size: 32px;
     margin: 20px 0;
 }
 
-.flashcard-answer{
+.flashcard-answer {
     font-size: 26px;
     color: #444;
 }
 
-/* Final Review special styling */
-#final-review {
-    border: 2px solid #4CAF50;
-}
+#final-review { border: 2px solid #4CAF50; }
 
-/* Bigger question for test */
 #final-review .current-question {
     font-size: 30px;
     font-weight: bold;
 }
 
-/* Final score style */
 #final-review .result {
     font-size: 20px;
     font-weight: bold;
 }
-/* =====================
-   Progress Text
-===================== */
-#progress-text{
-  font-size:16px;
-  margin:10px 0 15px 0;
-  padding:8px;
-  background:#f1f5ff;
-  border-radius:8px;
-  color:#333;
-  text-align:center;
-  font-weight:bold;
+
+/* PROGRESS TEXT */
+#progress-text {
+    font-size: 16px;
+    margin: 10px 0 15px 0;
+    padding: 8px;
+    background: #f1f5ff;
+    border-radius: 8px;
+    color: #333;
+    text-align: center;
+    font-weight: bold;
 }
 
-/* =====================
-   Complete Buttons
-===================== */
-.content-box button[onclick^="completeLesson"]{
-  padding:10px 15px;
-  background:#4CAF50; /* green */
-  color:white;
-  border:none;
-  border-radius:8px;
-  cursor:pointer;
-  font-size:14px;
-  transition:0.2s;
+/* COMPLETE BUTTONS */
+.content-box button[onclick^="completeLesson"] {
+    padding: 10px 15px;
+    background: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: 0.2s;
 }
 
-.content-box button[onclick^="completeLesson"]:hover{
-  background:#43a047;
+.content-box button[onclick^="completeLesson"]:hover { background: #43a047; }
+
+.completed {
+    background: #d4edda !important;
+    color: #155724 !important;
 }
 
-/* =====================
-   Completed State (optional future)
-===================== */
-.completed{
-  background:#d4edda !important;
-  color:#155724 !important;
-}
-.dashboard{
-    background:#111;
-    padding:20px;
-    border-radius:20px;
-    color:white;
-    max-width:500px;
-    margin:auto;
-    box-shadow:0 10px 30px rgba(0,0,0,0.4);
+/* DASHBOARD */
+.dashboard {
+    background: #111;
+    padding: 20px;
+    border-radius: 20px;
+    color: white;
+    max-width: 500px;
+    margin: auto;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
 }
 
-.card{
-    background:#1e1e1e;
-    padding:15px;
-    margin:10px 0;
-    border-radius:15px;
-    text-align:center;
+.card {
+    background: #1e1e1e;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 15px;
+    text-align: center;
 }
 
-.card h3{
-    margin:0;
-    font-size:14px;
-    color:#aaa;
+.card h3 {
+    margin: 0;
+    font-size: 14px;
+    color: #aaa;
 }
 
-.card p{
-    font-size:22px;
-    margin-top:5px;
-    font-weight:bold;
+.card p {
+    font-size: 22px;
+    margin-top: 5px;
+    font-weight: bold;
 }
 
-.progress-container{
-    width:100%;
-    height:12px;
-    background:#333;
-    border-radius:10px;
-    overflow:hidden;
-    margin-top:15px;
+.progress-container {
+    width: 100%;
+    height: 12px;
+    background: #333;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 15px;
 }
 
-#progress-bar{
-    height:100%;
-    width:0%;
-    background:linear-gradient(90deg,#4cafef,#00ffcc);
-    transition:0.5s;
+#progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #4cafef, #00ffcc);
+    transition: 0.5s;
 }
-/* ===== NAVBAR DASHBOARD STYLING ===== */
+
+/* NAVBAR DASHBOARD */
 .home-nav .dashboard {
     display: flex;
     gap: 10px;
     align-items: center;
     margin-left: 20px;
-    font-size: 12px; /* smaller text */
+    font-size: 12px;
 }
 
 .home-nav .dashboard .card {
     background: #1e1e1e;
-    padding: 5px 8px; /* smaller padding */
+    padding: 5px 8px;
     border-radius: 10px;
     text-align: center;
     min-width: auto;
@@ -638,20 +464,19 @@ input.answer {
 
 .home-nav .dashboard .card h3 {
     margin: 0;
-    font-size: 10px; /* smaller heading */
+    font-size: 10px;
     color: #aaa;
 }
 
 .home-nav .dashboard .card p {
-    font-size: 14px; /* smaller number */
+    font-size: 14px;
     margin-top: 2px;
     font-weight: bold;
 }
 
-/* Progress bar card adjustments */
 .home-nav .dashboard .progress-container {
-    height: 8px; /* thinner bar */
-    width: 120px; /* more space for percentage */
+    height: 8px;
+    width: 120px;
     background: #333;
     border-radius: 8px;
     overflow: hidden;
@@ -661,7 +486,7 @@ input.answer {
 .home-nav #progress-bar {
     height: 100%;
     width: 0%;
-    background: linear-gradient(90deg,#4cafef,#00ffcc);
+    background: linear-gradient(90deg, #4cafef, #00ffcc);
     transition: 0.5s;
 }
 
@@ -669,5 +494,127 @@ input.answer {
     font-size: 10px;
     margin: 0;
     text-align: center;
-    color: #000000;
+    color: #000;
+}
+
+/* =====================
+   TABLET (max 1024px)
+===================== */
+@media (max-width: 1024px) {
+    .sidebar { width: 200px; }
+    .content { padding: 30px 20px; }
+}
+
+/* =====================
+   MOBILE (max 768px)
+===================== */
+@media (max-width: 768px) {
+
+    /* NAVBAR */
+    .home-nav {
+        padding: 15px 20px;
+        position: relative;
+    }
+
+    .hamburger { display: flex; }
+
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 65px;
+        left: 0;
+        right: 0;
+        background: white;
+        padding: 20px;
+        gap: 15px;
+        border-bottom: 1px solid #eee;
+        z-index: 999;
+        box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+    }
+
+    .nav-links.open { display: flex; }
+
+    .nav-btn,
+    .nav-sign-in {
+        font-size: 14px;
+        padding: 8px 14px;
+    }
+
+    /* Hide nav dashboard on mobile — too cramped */
+    .home-nav .dashboard { display: none; }
+
+    /* STACK LAYOUT */
+    .layout { flex-direction: column; }
+
+    .sidebar {
+        width: 100%;
+        max-height: 200px;
+        overflow-y: auto;
+        padding: 15px;
+    }
+
+    .content { padding: 20px 16px; }
+
+    /* BLOCKS */
+    .blocks { gap: 20px; }
+
+    .block {
+        width: 28px;
+        height: 28px;
+    }
+
+    /* EXERCISE */
+    #Exercise-1 {
+        padding: 15px;
+        margin: 10px;
+    }
+
+    #Exercise-1 .blocks { gap: 20px; }
+
+    #Exercise-1 input.answer,
+    input.answer {
+        width: 100%;
+        max-width: 260px;
+        font-size: 16px;
+    }
+
+    .current-question { font-size: clamp(20px, 5vw, 28px); }
+    .flashcard-question { font-size: clamp(22px, 6vw, 32px); }
+
+    .content-box {
+        padding: 16px;
+        margin: 10px;
+    }
+
+    .check-btn,
+    .next-btn {
+        width: 100%;
+        max-width: 260px;
+    }
+
+    .dashboard {
+        padding: 15px;
+        max-width: 100%;
+    }
+}
+
+/* =====================
+   SMALL PHONES (max 420px)
+===================== */
+@media (max-width: 420px) {
+    .logo { font-size: 20px; }
+
+    .sidebar { max-height: 160px; }
+
+    .block {
+        width: 24px;
+        height: 24px;
+        margin: 2px;
+    }
+
+    .check-btn,
+    .next-btn {
+        font-size: 14px;
+    }
 }
