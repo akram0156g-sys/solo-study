@@ -1,34 +1,50 @@
-// Show/hide buttons based on login state
-function updateNavButtons() {
-    const loggedIn = localStorage.getItem("loggedIn") === "true";
-    const logoutBtn = document.getElementById("logoutBtn");
-    const profileLink = document.getElementById("profileLink");
-    const loginLink = document.getElementById("loginLink");
-    const signupLink = document.getElementById("signupLink");
+// Wait for Firebase auth state
+firebase.auth().onAuthStateChanged(function(user) {
+    const authButtons  = document.getElementById('authButtons');
+    const profileLink  = document.getElementById('profileLink');
+    const logoutBtn    = document.getElementById('logoutBtn');
+    const mobileLogin  = document.getElementById('mobileLoginItem');
+    const mobileSignup = document.getElementById('mobileSignupItem');
 
-    if (loggedIn) {
-        if (logoutBtn) logoutBtn.style.display = "inline-block";
-        if (profileLink) profileLink.style.display = "inline";
-        if (loginLink) loginLink.style.display = "none";
-        if (signupLink) signupLink.style.display = "none";
+    if (user) {
+        // Logged in
+        localStorage.setItem("loggedIn", "true");
+        localStorage.setItem("loggedInUser", user.email);
+
+        if (authButtons)  authButtons.style.display  = 'none';
+        if (profileLink)  profileLink.style.display  = 'inline';
+        if (logoutBtn)    logoutBtn.style.display     = 'inline-block';
+        if (mobileLogin)  mobileLogin.style.display  = 'none';
+        if (mobileSignup) mobileSignup.style.display = 'none';
+    } else {
+        // Logged out
+        localStorage.removeItem("loggedIn");
+        localStorage.removeItem("loggedInUser");
+
+        if (authButtons)  authButtons.style.display  = 'flex';
+        if (profileLink)  profileLink.style.display  = 'none';
+        if (logoutBtn)    logoutBtn.style.display     = 'none';
+        if (mobileLogin)  mobileLogin.style.display  = 'list-item';
+        if (mobileSignup) mobileSignup.style.display = 'list-item';
     }
-}
+});
 
-updateNavButtons();
+// Logout button
+document.getElementById("logoutBtn")?.addEventListener("click", function () {
+    firebase.auth().signOut().then(() => {
+        localStorage.removeItem("loggedIn");
+        localStorage.removeItem("loggedInUser");
+        window.location.href = "/index.html";
+    });
+});
 
 // Protect lesson links
 document.querySelectorAll(".hero-btn, .grade-card a").forEach(btn => {
     btn.addEventListener("click", e => {
-        if (localStorage.getItem("loggedIn") !== "true") {
+        if (!firebase.auth().currentUser) {
             e.preventDefault();
             alert("Please log in first to access lessons!");
             window.location.href = "/login/index.html";
         }
     });
-});
-// Logout function
-document.getElementById("logoutBtn")?.addEventListener("click", function () {
-    localStorage.removeItem("loggedIn");
-    localStorage.removeItem("loggedInUser");
-    window.location.href = "/index.html";
 });
