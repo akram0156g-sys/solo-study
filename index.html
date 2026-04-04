@@ -4,10 +4,11 @@
     <meta name="google-site-verification" content="SRAJrtK3gTxb3VkaIrPc9mM7M-bwMdFP7Ja6rOeyoOU" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>home</title>
+    <title>Solo Study</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
 <nav class="home-nav">
     <h1 class="logo">Solo Study</h1>
     <div class="nav-right">
@@ -16,47 +17,60 @@
             <li><a href="#">Streak</a></li>
             <li><a href="../lessons/index.html">Lessons</a></li>
             <li><a href="../contact/index.html">Contact</a></li>
-            <li><a href="../profile/index.html" id="profileLink" style="display: none">Profile</a></li>
+            <li><a href="../profile/index.html" id="profileLink" style="display:none;">Profile</a></li>
+            <!-- Mobile Login & Sign Up (inside hamburger menu) -->
+            <li id="mobileLoginItem" style="display:none;"><a href="../login/index.html">Login</a></li>
+            <li id="mobileSignupItem" style="display:none;"><a href="../sign-up/index.html" style="color:#22c55e; font-weight:700;">Sign Up</a></li>
         </ul>
-        <button id="logoutBtn" style="display:none; background:#ef4444;" class="nav-btn">Logout</button>
+
+        <!-- Desktop Login + Sign Up -->
+        <div class="nav-buttons" id="authButtons">
+            <a href="../login/index.html" class="nav-login-link">Login</a>
+            <a href="../sign-up/index.html" class="nav-signup-link">Sign Up</a>
+        </div>
+
+        <!-- Logout (logged in only) -->
+        <button id="logoutBtn" style="display:none; background:linear-gradient(135deg,#ef4444,#dc2626); box-shadow:0 4px 14px rgba(239,68,68,0.35);" class="nav-btn">Logout</button>
+
         <button class="hamburger" id="hamburger" onclick="document.getElementById('navLinks').classList.toggle('open')">
-            <span></span>
-            <span></span>
-            <span></span>
+            <span></span><span></span><span></span>
         </button>
     </div>
 </nav>
+
 <section class="hero">
     <div class="hero-content">
-        <h1>Master from grade 1 through grade 11 subjects the Smart Way</h1>
-        <p>Interactive flashcards + practice exercises</p>
-        <a href="../lessons/index.html" class="hero-btn">Start learning</a>
+        <h1>Master Grades 1–11 the <span class="highlight">Smart Way</span></h1>
+        <p>Interactive flashcards + practice exercises that make learning stick.</p>
+        <a href="../lessons/index.html" class="hero-btn">Start Learning →</a>
     </div>
 </section>
+
 <section class="features">
     <h2>How Solo Study Works</h2>
     <div class="feature-cards">
         <div class="card">
             <h3>🎯 Visual Flashcards</h3>
-            <p>Understand math concepts clearly with visual explanations.</p>
+            <p>Understand concepts clearly with beautiful visual explanations built for every level.</p>
         </div>
         <div class="card">
             <h3>📝 Smart Exercises</h3>
-            <p>Practice with interactive exercises and instant feedback.</p>
+            <p>Practice with interactive exercises and get instant feedback on every answer.</p>
         </div>
         <div class="card">
-            <h3>🏆 EXP & Streak</h3>
-            <p>Earn XP and stay consistent with daily streak rewards.</p>
+            <h3>🏆 XP & Streaks</h3>
+            <p>Earn XP, level up, and stay consistent with daily streak rewards that keep you motivated.</p>
         </div>
     </div>
 </section>
+
 <section class="grades">
     <h2>Choose Your Grade</h2>
     <div class="grade-cards">
         <div class="grade-card active">
             <h3>Grade 4</h3>
             <p class="p">Fully Available</p>
-            <a href="../lessons/index.html" class="a">Start</a>
+            <a href="../lessons/index.html" class="a">Start →</a>
         </div>
         <div class="grade-card locked">
             <h3>Grade 5</h3>
@@ -68,10 +82,34 @@
         </div>
     </div>
 </section>
+
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
 <script src="/firebase-config.js"></script>
+<script>
+    firebase.auth().onAuthStateChanged(function(user) {
+        const authButtons  = document.getElementById('authButtons');
+        const profileLink  = document.getElementById('profileLink');
+        const logoutBtn    = document.getElementById('logoutBtn');
+        const mobileLogin  = document.getElementById('mobileLoginItem');
+        const mobileSignup = document.getElementById('mobileSignupItem');
+
+        if (user) {
+            if (authButtons)  authButtons.style.display  = 'none';
+            if (profileLink)  profileLink.style.display  = 'inline';
+            if (logoutBtn)    logoutBtn.style.display     = 'inline-block';
+            if (mobileLogin)  mobileLogin.style.display  = 'none';
+            if (mobileSignup) mobileSignup.style.display = 'none';
+        } else {
+            if (authButtons)  authButtons.style.display  = 'flex';
+            if (profileLink)  profileLink.style.display  = 'none';
+            if (logoutBtn)    logoutBtn.style.display     = 'none';
+            if (mobileLogin)  mobileLogin.style.display  = 'list-item';
+            if (mobileSignup) mobileSignup.style.display = 'list-item';
+        }
+    });
+</script>
 <script src="code.js"></script>
 </body>
 </html>
