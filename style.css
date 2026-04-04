@@ -12,9 +12,6 @@ body {
     -webkit-font-smoothing: antialiased;
 }
 
-/* ===========================
-   NAVBAR
-=========================== */
 .home-nav {
     background: rgba(255, 255, 255, 0.92);
     backdrop-filter: blur(16px);
@@ -75,7 +72,6 @@ body {
     align-items: center;
 }
 
-/* Login link */
 .nav-login-link {
     text-decoration: none;
     color: #374151;
@@ -93,7 +89,6 @@ body {
     background: rgba(34, 197, 94, 0.06);
 }
 
-/* Sign Up button */
 .nav-signup-link {
     text-decoration: none;
     color: white;
@@ -111,7 +106,6 @@ body {
     box-shadow: 0 6px 20px rgba(34, 197, 94, 0.45);
 }
 
-/* Logout / generic nav-btn */
 .nav-btn {
     color: white;
     padding: 9px 20px;
@@ -151,9 +145,12 @@ body {
     background: rgba(34, 197, 94, 0.05);
 }
 
-/* ===========================
-   HERO
-=========================== */
+/* Hide mobile items always on desktop */
+#mobileLoginItem,
+#mobileSignupItem {
+    display: none !important;
+}
+
 @keyframes heroFadeIn {
     from { opacity: 0; transform: translateY(28px); }
     to   { opacity: 1; transform: translateY(0); }
@@ -260,9 +257,6 @@ body {
     transform: scale(0.97);
 }
 
-/* ===========================
-   FEATURES
-=========================== */
 .features {
     padding: 100px 40px;
     text-align: center;
@@ -323,9 +317,6 @@ body {
     font-size: 15px;
 }
 
-/* ===========================
-   GRADES
-=========================== */
 .grades {
     padding: 100px 40px;
     text-align: center;
@@ -425,13 +416,8 @@ body {
     pointer-events: none;
 }
 
-.p {
-    margin-bottom: 12px;
-}
+.p { margin-bottom: 12px; }
 
-/* ===========================
-   HAMBURGER
-=========================== */
 .hamburger {
     display: none;
     flex-direction: column;
@@ -444,9 +430,7 @@ body {
     transition: background 0.2s;
 }
 
-.hamburger:hover {
-    background: rgba(0, 0, 0, 0.05);
-}
+.hamburger:hover { background: rgba(0, 0, 0, 0.05); }
 
 .hamburger span {
     display: block;
@@ -457,9 +441,6 @@ body {
     transition: 0.3s;
 }
 
-/* ===========================
-   MOBILE
-=========================== */
 @media (max-width: 768px) {
     .home-nav {
         padding: 14px 20px;
@@ -496,6 +477,12 @@ body {
     }
 
     .nav-btn { font-size: 14px; padding: 8px 14px; }
+
+    /* On mobile, allow mobile login/signup to show when JS sets them */
+    #mobileLoginItem,
+    #mobileSignupItem {
+        display: none;
+    }
 
     .hero { padding: 70px 20px 60px; min-height: auto; }
 
