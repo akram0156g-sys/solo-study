@@ -87,29 +87,6 @@
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
 <script src="/firebase-config.js"></script>
-<script>
-    firebase.auth().onAuthStateChanged(function(user) {
-        const authButtons  = document.getElementById('authButtons');
-        const profileLink  = document.getElementById('profileLink');
-        const logoutBtn    = document.getElementById('logoutBtn');
-        const mobileLogin  = document.getElementById('mobileLoginItem');
-        const mobileSignup = document.getElementById('mobileSignupItem');
-
-        if (user) {
-            if (authButtons)  authButtons.style.display  = 'none';
-            if (profileLink)  profileLink.style.display  = 'inline';
-            if (logoutBtn)    logoutBtn.style.display     = 'inline-block';
-            if (mobileLogin)  mobileLogin.style.display  = 'none';
-            if (mobileSignup) mobileSignup.style.display = 'none';
-        } else {
-            if (authButtons)  authButtons.style.display  = 'flex';
-            if (profileLink)  profileLink.style.display  = 'none';
-            if (logoutBtn)    logoutBtn.style.display     = 'none';
-            if (mobileLogin)  mobileLogin.style.display  = 'list-item';
-            if (mobileSignup) mobileSignup.style.display = 'list-item';
-        }
-    });
-</script>
 <script src="code.js"></script>
 </body>
 </html>
