@@ -362,13 +362,11 @@ const lessonName = 'place-value'; // Change this per lesson
 let selectedReasons = {};
 
 function showFeedbackPopup() {
-  // Only show once per session
   if (sessionStorage.getItem('feedbackShown-' + lessonName)) return;
   sessionStorage.setItem('feedbackShown-' + lessonName, 'true');
 
   const overlay = document.getElementById('feedbackOverlay');
   overlay.style.display = 'flex';
-  // Reset to step 1
   document.getElementById('feedbackStep1').style.display = 'block';
   document.getElementById('feedbackStep2').style.display = 'none';
   document.getElementById('feedbackStep3').style.display = 'none';
@@ -384,11 +382,9 @@ async function feedbackYes() {
   document.getElementById('feedbackThanksMsg').textContent = 'Great! Glad you enjoyed it! 🎉';
   document.getElementById('feedbackStep3').style.display = 'block';
 
-  // Save to Firestore
   try {
-    const ref = doc(db, 'feedback', lessonName);
-    await setDoc(ref, {
-      totalYes: increment(1)
+    await db.collection('feedback').doc(lessonName).set({
+      totalYes: firebase.firestore.FieldValue.increment(1)
     }, { merge: true });
   } catch (e) {
     console.warn('Feedback save failed:', e);
@@ -411,7 +407,6 @@ function toggleReason(btn, reason) {
     btn.style.background = '#1a3a2a';
   }
 
-  // Show/hide text box for "other"
   const otherText = document.getElementById('otherText');
   if (reason === 'other') {
     otherText.style.display = selectedReasons['other'] ? 'block' : 'none';
@@ -420,23 +415,24 @@ function toggleReason(btn, reason) {
 
 async function submitFeedbackNo() {
   const otherText = document.getElementById('otherText').value.trim();
-  const updateData = { totalNo: increment(1) };
+  const updateData = {
+    totalNo: firebase.firestore.FieldValue.increment(1)
+  };
 
-  if (selectedReasons.tooHard)   updateData['reasons.tooHard']   = increment(1);
-  if (selectedReasons.tooEasy)   updateData['reasons.tooEasy']   = increment(1);
-  if (selectedReasons.boring)    updateData['reasons.boring']    = increment(1);
-  if (selectedReasons.confusing) updateData['reasons.confusing'] = increment(1);
-  if (selectedReasons.other)     updateData['reasons.other']     = increment(1);
-  if (otherText) updateData['otherResponses'] = arrayUnion(otherText);
+  if (selectedReasons.tooHard)   updateData['reasons.tooHard']   = firebase.firestore.FieldValue.increment(1);
+  if (selectedReasons.tooEasy)   updateData['reasons.tooEasy']   = firebase.firestore.FieldValue.increment(1);
+  if (selectedReasons.boring)    updateData['reasons.boring']    = firebase.firestore.FieldValue.increment(1);
+  if (selectedReasons.confusing) updateData['reasons.confusing'] = firebase.firestore.FieldValue.increment(1);
+  if (selectedReasons.other)     updateData['reasons.other']     = firebase.firestore.FieldValue.increment(1);
+  if (otherText) updateData['otherResponses'] = firebase.firestore.FieldValue.arrayUnion(otherText);
 
   try {
-    const ref = doc(db, 'feedback', lessonName);
-    await setDoc(ref, updateData, { merge: true });
+    await db.collection('feedback').doc(lessonName).set(updateData, { merge: true });
   } catch (e) {
     console.warn('Feedback save failed:', e);
   }
 
   document.getElementById('feedbackStep2').style.display = 'none';
-  document.getElementById('feedbackThanksMsg').textContent = 'Thanks for the feedback! We\'ll make it better. 💪';
+  document.getElementById('feedbackThanksMsg').textContent = "Thanks for the feedback! We'll make it better. 💪";
   document.getElementById('feedbackStep3').style.display = 'block';
 }
