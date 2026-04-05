@@ -192,7 +192,45 @@
 
   </main>
 </div>
+<!-- Feedback Popup -->
+<div id="feedbackOverlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:9999; justify-content:center; align-items:center;">
+  <div style="background:#1e2d3d; border-radius:16px; padding:2rem; max-width:420px; width:90%; text-align:center; box-shadow:0 0 30px rgba(34,197,94,0.3);">
+    
+    <!-- Step 1: Yes or No -->
+    <div id="feedbackStep1">
+      <h2 style="color:#fff; margin-bottom:0.5rem;">Was this lesson helpful? 🎓</h2>
+      <p style="color:#94a3b8; margin-bottom:1.5rem;">Your feedback helps us improve!</p>
+      <div style="display:flex; gap:1rem; justify-content:center;">
+        <button onclick="feedbackYes()" style="background:#22c55e; color:#fff; border:none; padding:0.8rem 2rem; border-radius:10px; font-size:1.2rem; cursor:pointer;">✅ Yes</button>
+        <button onclick="feedbackNo()" style="background:#ef4444; color:#fff; border:none; padding:0.8rem 2rem; border-radius:10px; font-size:1.2rem; cursor:pointer;">❌ No</button>
+      </div>
+    </div>
 
+    <!-- Step 2: Reasons (shown only if No) -->
+    <div id="feedbackStep2" style="display:none;">
+      <h2 style="color:#fff; margin-bottom:0.5rem;">What went wrong? 🤔</h2>
+      <p style="color:#94a3b8; margin-bottom:1rem;">Pick all that apply:</p>
+      <div style="display:flex; flex-direction:column; gap:0.6rem; margin-bottom:1rem;">
+        <button onclick="toggleReason(this, 'tooHard')" class="reason-btn" style="background:#2d3f55; color:#fff; border:2px solid transparent; padding:0.6rem 1rem; border-radius:10px; cursor:pointer; font-size:0.95rem;">😓 Too Hard</button>
+        <button onclick="toggleReason(this, 'tooEasy')" class="reason-btn" style="background:#2d3f55; color:#fff; border:2px solid transparent; padding:0.6rem 1rem; border-radius:10px; cursor:pointer; font-size:0.95rem;">😴 Too Easy</button>
+        <button onclick="toggleReason(this, 'boring')" class="reason-btn" style="background:#2d3f55; color:#fff; border:2px solid transparent; padding:0.6rem 1rem; border-radius:10px; cursor:pointer; font-size:0.95rem;">😑 Boring</button>
+        <button onclick="toggleReason(this, 'confusing')" class="reason-btn" style="background:#2d3f55; color:#fff; border:2px solid transparent; padding:0.6rem 1rem; border-radius:10px; cursor:pointer; font-size:0.95rem;">😵 Confusing</button>
+        <button onclick="toggleReason(this, 'other')" class="reason-btn" style="background:#2d3f55; color:#fff; border:2px solid transparent; padding:0.6rem 1rem; border-radius:10px; cursor:pointer; font-size:0.95rem;">💬 Other</button>
+      </div>
+      <textarea id="otherText" placeholder="Tell us more... (optional)" style="display:none; width:100%; padding:0.6rem; border-radius:8px; background:#0f1c2e; color:#fff; border:1px solid #334155; resize:none; margin-bottom:1rem; font-size:0.9rem;" rows="3"></textarea>
+      <button onclick="submitFeedbackNo()" style="background:#22c55e; color:#fff; border:none; padding:0.7rem 2rem; border-radius:10px; font-size:1rem; cursor:pointer;">Submit</button>
+    </div>
+
+    <!-- Step 3: Thank you message -->
+    <div id="feedbackStep3" style="display:none;">
+      <div style="font-size:3rem; margin-bottom:1rem;">🌟</div>
+      <h2 id="feedbackThanksMsg" style="color:#fff; margin-bottom:0.5rem;"></h2>
+      <p style="color:#94a3b8; margin-bottom:1.5rem;">Keep it up — you're doing amazing!</p>
+      <button onclick="closeFeedback()" style="background:#22c55e; color:#fff; border:none; padding:0.7rem 2rem; border-radius:10px; font-size:1rem; cursor:pointer;">Continue 🚀</button>
+    </div>
+
+  </div>
+</div>
 <script src="../code.js"></script>
 </body>
 </html>
