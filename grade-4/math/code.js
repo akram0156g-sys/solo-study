@@ -92,6 +92,8 @@ function updateProgress() {
     if (bar) bar.style.width = percent + "%";
     if (txt) txt.textContent = `Progress: ${done} / 4`;
 
+    if (done === 4) showFeedbackPopup(); // ← ADD THIS LINE
+
     // Sync to global lessons key so the lessons page progress bar updates correctly
     localStorage.setItem('lesson-place-value', JSON.stringify({ exercises: 4, completed: done }));
 
@@ -355,3 +357,86 @@ document.addEventListener("DOMContentLoaded", function () {
     updateXP();
     showContent("visual-flashcards-1");
 });
+// ─── FEEDBACK POPUP ────────────────────────────────────────────────
+const lessonName = 'place-value'; // Change this per lesson
+let selectedReasons = {};
+
+function showFeedbackPopup() {
+  // Only show once per session
+  if (sessionStorage.getItem('feedbackShown-' + lessonName)) return;
+  sessionStorage.setItem('feedbackShown-' + lessonName, 'true');
+
+  const overlay = document.getElementById('feedbackOverlay');
+  overlay.style.display = 'flex';
+  // Reset to step 1
+  document.getElementById('feedbackStep1').style.display = 'block';
+  document.getElementById('feedbackStep2').style.display = 'none';
+  document.getElementById('feedbackStep3').style.display = 'none';
+  selectedReasons = {};
+}
+
+function closeFeedback() {
+  document.getElementById('feedbackOverlay').style.display = 'none';
+}
+
+async function feedbackYes() {
+  document.getElementById('feedbackStep1').style.display = 'none';
+  document.getElementById('feedbackThanksMsg').textContent = 'Great! Glad you enjoyed it! 🎉';
+  document.getElementById('feedbackStep3').style.display = 'block';
+
+  // Save to Firestore
+  try {
+    const ref = doc(db, 'feedback', lessonName);
+    await setDoc(ref, {
+      totalYes: increment(1)
+    }, { merge: true });
+  } catch (e) {
+    console.warn('Feedback save failed:', e);
+  }
+}
+
+function feedbackNo() {
+  document.getElementById('feedbackStep1').style.display = 'none';
+  document.getElementById('feedbackStep2').style.display = 'block';
+}
+
+function toggleReason(btn, reason) {
+  if (selectedReasons[reason]) {
+    delete selectedReasons[reason];
+    btn.style.borderColor = 'transparent';
+    btn.style.background = '#2d3f55';
+  } else {
+    selectedReasons[reason] = true;
+    btn.style.borderColor = '#22c55e';
+    btn.style.background = '#1a3a2a';
+  }
+
+  // Show/hide text box for "other"
+  const otherText = document.getElementById('otherText');
+  if (reason === 'other') {
+    otherText.style.display = selectedReasons['other'] ? 'block' : 'none';
+  }
+}
+
+async function submitFeedbackNo() {
+  const otherText = document.getElementById('otherText').value.trim();
+  const updateData = { totalNo: increment(1) };
+
+  if (selectedReasons.tooHard)   updateData['reasons.tooHard']   = increment(1);
+  if (selectedReasons.tooEasy)   updateData['reasons.tooEasy']   = increment(1);
+  if (selectedReasons.boring)    updateData['reasons.boring']    = increment(1);
+  if (selectedReasons.confusing) updateData['reasons.confusing'] = increment(1);
+  if (selectedReasons.other)     updateData['reasons.other']     = increment(1);
+  if (otherText) updateData['otherResponses'] = arrayUnion(otherText);
+
+  try {
+    const ref = doc(db, 'feedback', lessonName);
+    await setDoc(ref, updateData, { merge: true });
+  } catch (e) {
+    console.warn('Feedback save failed:', e);
+  }
+
+  document.getElementById('feedbackStep2').style.display = 'none';
+  document.getElementById('feedbackThanksMsg').textContent = 'Thanks for the feedback! We\'ll make it better. 💪';
+  document.getElementById('feedbackStep3').style.display = 'block';
+}
