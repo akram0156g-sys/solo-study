@@ -391,6 +391,10 @@ async function feedbackYes() {
     console.warn('Feedback save failed:', e);
   }
 }
+function feedbackNo() {
+  document.getElementById('feedbackStep1').style.display = 'none';
+  document.getElementById('feedbackStep2').style.display = 'block';
+}
 
 async function submitFeedbackNo() {
   const otherText = document.getElementById('otherText').value.trim();
