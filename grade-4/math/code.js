@@ -92,9 +92,8 @@ function updateProgress() {
     if (bar) bar.style.width = percent + "%";
     if (txt) txt.textContent = `Progress: ${done} / 4`;
 
-    if (done === 4) showFeedbackPopup(); // ← ADD THIS LINE
+    if (done === 4) showFeedbackPopup();
 
-    // Sync to global lessons key so the lessons page progress bar updates correctly
     localStorage.setItem('lesson-place-value', JSON.stringify({ exercises: 4, completed: done }));
 
     calculateUnitAverage();
@@ -242,6 +241,99 @@ function calculateLevel() {
 }
 
 // =====================
+// FEEDBACK POPUP
+// =====================
+const lessonName = 'place-value';
+let selectedReasons = {};
+
+function showFeedbackPopup() {
+    if (sessionStorage.getItem('feedbackShown-' + lessonName)) return;
+    sessionStorage.setItem('feedbackShown-' + lessonName, 'true');
+
+    const overlay = document.getElementById('feedbackOverlay');
+    if (!overlay) return;
+    overlay.style.display = 'flex';
+    document.getElementById('feedbackStep1').style.display = 'block';
+    document.getElementById('feedbackStep2').style.display = 'none';
+    document.getElementById('feedbackStep3').style.display = 'none';
+    selectedReasons = {};
+}
+
+function closeFeedback() {
+    document.getElementById('feedbackOverlay').style.display = 'none';
+}
+
+function feedbackNo() {
+    document.getElementById('feedbackStep1').style.display = 'none';
+    document.getElementById('feedbackStep2').style.display = 'block';
+}
+
+function toggleReason(btn, reason) {
+    if (selectedReasons[reason]) {
+        delete selectedReasons[reason];
+        btn.style.borderColor = 'transparent';
+        btn.style.background = '#2d3f55';
+    } else {
+        selectedReasons[reason] = true;
+        btn.style.borderColor = '#22c55e';
+        btn.style.background = '#1a3a2a';
+    }
+    const otherText = document.getElementById('otherText');
+    if (reason === 'other') {
+        otherText.style.display = selectedReasons['other'] ? 'block' : 'none';
+    }
+}
+
+async function feedbackYes() {
+    document.getElementById('feedbackStep1').style.display = 'none';
+    document.getElementById('feedbackThanksMsg').textContent = 'Great! Glad you enjoyed it! 🎉';
+    document.getElementById('feedbackStep3').style.display = 'block';
+
+    try {
+        const ref = db.collection('feedback').doc(lessonName);
+        const snap = await ref.get();
+        const data = snap.exists ? snap.data() : {};
+        await ref.set({ totalYes: (data.totalYes || 0) + 1 }, { merge: true });
+    } catch (e) {
+        console.warn('Feedback save failed:', e);
+    }
+}
+
+async function submitFeedbackNo() {
+    const otherText = document.getElementById('otherText').value.trim();
+
+    try {
+        const ref = db.collection('feedback').doc(lessonName);
+        const snap = await ref.get();
+        const data = snap.exists ? snap.data() : {};
+        const reasons = data.reasons || {};
+
+        const updateData = {
+            totalNo: (data.totalNo || 0) + 1,
+            reasons: {
+                tooHard:   (reasons.tooHard   || 0) + (selectedReasons.tooHard   ? 1 : 0),
+                tooEasy:   (reasons.tooEasy   || 0) + (selectedReasons.tooEasy   ? 1 : 0),
+                boring:    (reasons.boring    || 0) + (selectedReasons.boring    ? 1 : 0),
+                confusing: (reasons.confusing || 0) + (selectedReasons.confusing ? 1 : 0),
+                other:     (reasons.other     || 0) + (selectedReasons.other     ? 1 : 0),
+            }
+        };
+
+        if (otherText) {
+            updateData.otherResponses = [...(data.otherResponses || []), otherText];
+        }
+
+        await ref.set(updateData, { merge: true });
+    } catch (e) {
+        console.warn('Feedback save failed:', e);
+    }
+
+    document.getElementById('feedbackStep2').style.display = 'none';
+    document.getElementById('feedbackThanksMsg').textContent = "Thanks for the feedback! We'll make it better. 💪";
+    document.getElementById('feedbackStep3').style.display = 'block';
+}
+
+// =====================
 // INIT
 // =====================
 document.addEventListener("DOMContentLoaded", function () {
@@ -357,75 +449,3 @@ document.addEventListener("DOMContentLoaded", function () {
     updateXP();
     showContent("visual-flashcards-1");
 });
-// ─── FEEDBACK POPUP ────────────────────────────────────────────────
-const lessonName = 'place-value'; // Change this per lesson
-let selectedReasons = {};
-
-function showFeedbackPopup() {
-  if (sessionStorage.getItem('feedbackShown-' + lessonName)) return;
-  sessionStorage.setItem('feedbackShown-' + lessonName, 'true');
-
-  const overlay = document.getElementById('feedbackOverlay');
-  overlay.style.display = 'flex';
-  document.getElementById('feedbackStep1').style.display = 'block';
-  document.getElementById('feedbackStep2').style.display = 'none';
-  document.getElementById('feedbackStep3').style.display = 'none';
-  selectedReasons = {};
-}
-
-function closeFeedback() {
-  document.getElementById('feedbackOverlay').style.display = 'none';
-}
-
-async function feedbackYes() {
-  document.getElementById('feedbackStep1').style.display = 'none';
-  document.getElementById('feedbackThanksMsg').textContent = 'Great! Glad you enjoyed it! 🎉';
-  document.getElementById('feedbackStep3').style.display = 'block';
-
-  try {
-    const ref = db.collection('feedback').doc(lessonName);
-    const snap = await ref.get();
-    const data = snap.exists ? snap.data() : {};
-    await ref.set({ totalYes: (data.totalYes || 0) + 1 }, { merge: true });
-  } catch (e) {
-    console.warn('Feedback save failed:', e);
-  }
-}
-function feedbackNo() {
-  document.getElementById('feedbackStep1').style.display = 'none';
-  document.getElementById('feedbackStep2').style.display = 'block';
-}
-
-async function submitFeedbackNo() {
-  const otherText = document.getElementById('otherText').value.trim();
-
-  try {
-    const ref = db.collection('feedback').doc(lessonName);
-    const snap = await ref.get();
-    const data = snap.exists ? snap.data() : {};
-    const reasons = data.reasons || {};
-
-    const updateData = {
-      totalNo: (data.totalNo || 0) + 1,
-      reasons: {
-        tooHard:   (reasons.tooHard   || 0) + (selectedReasons.tooHard   ? 1 : 0),
-        tooEasy:   (reasons.tooEasy   || 0) + (selectedReasons.tooEasy   ? 1 : 0),
-        boring:    (reasons.boring    || 0) + (selectedReasons.boring    ? 1 : 0),
-        confusing: (reasons.confusing || 0) + (selectedReasons.confusing ? 1 : 0),
-        other:     (reasons.other     || 0) + (selectedReasons.other     ? 1 : 0),
-      }
-    };
-
-    if (otherText) {
-      updateData.otherResponses = [...(data.otherResponses || []), otherText];
-    }
-
-    await ref.set(updateData, { merge: true });
-  } catch (e) {
-    console.warn('Feedback save failed:', e);
-  }
-
-  document.getElementById('feedbackStep2').style.display = 'none';
-  document.getElementById('feedbackThanksMsg').textContent = "Thanks for the feedback! We'll make it better. 💪";
-  document.getElementById('feedbackStep3').style.display = 'block';
-}
