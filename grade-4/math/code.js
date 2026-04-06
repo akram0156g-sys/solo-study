@@ -383,51 +383,40 @@ async function feedbackYes() {
   document.getElementById('feedbackStep3').style.display = 'block';
 
   try {
-    await db.collection('feedback').doc(lessonName).set({
-      totalYes: firebase.firestore.FieldValue.increment(1)
-    }, { merge: true });
+    const ref = db.collection('feedback').doc(lessonName);
+    const snap = await ref.get();
+    const data = snap.exists ? snap.data() : {};
+    await ref.set({ totalYes: (data.totalYes || 0) + 1 }, { merge: true });
   } catch (e) {
     console.warn('Feedback save failed:', e);
   }
 }
 
-function feedbackNo() {
-  document.getElementById('feedbackStep1').style.display = 'none';
-  document.getElementById('feedbackStep2').style.display = 'block';
-}
-
-function toggleReason(btn, reason) {
-  if (selectedReasons[reason]) {
-    delete selectedReasons[reason];
-    btn.style.borderColor = 'transparent';
-    btn.style.background = '#2d3f55';
-  } else {
-    selectedReasons[reason] = true;
-    btn.style.borderColor = '#22c55e';
-    btn.style.background = '#1a3a2a';
-  }
-
-  const otherText = document.getElementById('otherText');
-  if (reason === 'other') {
-    otherText.style.display = selectedReasons['other'] ? 'block' : 'none';
-  }
-}
-
 async function submitFeedbackNo() {
   const otherText = document.getElementById('otherText').value.trim();
-  const updateData = {
-    totalNo: firebase.firestore.FieldValue.increment(1)
-  };
-
-  if (selectedReasons.tooHard)   updateData['reasons.tooHard']   = firebase.firestore.FieldValue.increment(1);
-  if (selectedReasons.tooEasy)   updateData['reasons.tooEasy']   = firebase.firestore.FieldValue.increment(1);
-  if (selectedReasons.boring)    updateData['reasons.boring']    = firebase.firestore.FieldValue.increment(1);
-  if (selectedReasons.confusing) updateData['reasons.confusing'] = firebase.firestore.FieldValue.increment(1);
-  if (selectedReasons.other)     updateData['reasons.other']     = firebase.firestore.FieldValue.increment(1);
-  if (otherText) updateData['otherResponses'] = firebase.firestore.FieldValue.arrayUnion(otherText);
 
   try {
-    await db.collection('feedback').doc(lessonName).set(updateData, { merge: true });
+    const ref = db.collection('feedback').doc(lessonName);
+    const snap = await ref.get();
+    const data = snap.exists ? snap.data() : {};
+    const reasons = data.reasons || {};
+
+    const updateData = {
+      totalNo: (data.totalNo || 0) + 1,
+      reasons: {
+        tooHard:   (reasons.tooHard   || 0) + (selectedReasons.tooHard   ? 1 : 0),
+        tooEasy:   (reasons.tooEasy   || 0) + (selectedReasons.tooEasy   ? 1 : 0),
+        boring:    (reasons.boring    || 0) + (selectedReasons.boring    ? 1 : 0),
+        confusing: (reasons.confusing || 0) + (selectedReasons.confusing ? 1 : 0),
+        other:     (reasons.other     || 0) + (selectedReasons.other     ? 1 : 0),
+      }
+    };
+
+    if (otherText) {
+      updateData.otherResponses = [...(data.otherResponses || []), otherText];
+    }
+
+    await ref.set(updateData, { merge: true });
   } catch (e) {
     console.warn('Feedback save failed:', e);
   }
