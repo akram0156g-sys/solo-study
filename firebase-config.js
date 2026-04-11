@@ -9,8 +9,8 @@ const firebaseConfig = {
 };
 
 firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-const db = firebase.firestore();
+var auth = firebase.auth();
+var db = firebase.firestore();
 
 // Save all user data from localStorage to Firestore
 async function syncToFirestore() {
@@ -46,7 +46,6 @@ async function loadFromFirestore(uid) {
     }
     return null;
 }
-// ... your existing firebase-config.js code above ...
 
 // Logout button (works on any page that has it)
 document.getElementById("logoutBtn")?.addEventListener("click", async function () {
