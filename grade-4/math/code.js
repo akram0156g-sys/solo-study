@@ -8,6 +8,31 @@ function showContent(id) {
 }
 
 // =====================
+// NUMBER TO WORDS
+// =====================
+function numberToWords(n) {
+    const ones = ["", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine",
+                  "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen",
+                  "seventeen", "eighteen", "nineteen"];
+    const tens = ["", "", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"];
+
+    if (n === 0) return "Zero";
+    let result = "";
+    if (n >= 100) {
+        result += ones[Math.floor(n / 100)] + " hundred";
+        n = n % 100;
+        if (n > 0) result += " ";
+    }
+    if (n >= 20) {
+        result += tens[Math.floor(n / 10)];
+        if (n % 10 > 0) result += "-" + ones[n % 10];
+    } else if (n > 0) {
+        result += ones[n];
+    }
+    return result.charAt(0).toUpperCase() + result.slice(1);
+}
+
+// =====================
 // XP SYSTEM
 // =====================
 let xp = parseInt(localStorage.getItem("xp")) || 0;
@@ -334,6 +359,14 @@ async function submitFeedbackNo() {
 }
 
 // =====================
+// RANDOM WORD-NUMBER GENERATOR
+// =====================
+function randomWordQuestion() {
+    let n = Math.floor(Math.random() * 899) + 100; // 100–998, always 3 digits
+    return { question: numberToWords(n), answer: n };
+}
+
+// =====================
 // INIT
 // =====================
 document.addEventListener("DOMContentLoaded", function () {
@@ -344,11 +377,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const fc2 = document.getElementById("visual-flashcards-2");
     if (fc2) {
-        const data = [{ w: "Six hundred forty-two", n: 642 }, { w: "Three hundred eighty-nine", n: 389 }, { w: "Two hundred seventy-six", n: 276 }];
-        let i = 0;
         fc2.querySelector(".next-btn").onclick = () => {
-            fc2.querySelector(".word-number").textContent = `${data[i].w} = ${data[i].n}`;
-            i = (i + 1) % data.length;
+            let n = Math.floor(Math.random() * 899) + 100;
+            fc2.querySelector(".word-number").textContent = `${numberToWords(n)} = ${n}`;
         };
     }
 
@@ -377,10 +408,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // ===== EXERCISES =====
     setupExercise("Exercise-1", "lesson1", () => { let n = Math.floor(Math.random() * 999) + 1; return { question: n, answer: n, blocks: true }; });
-    setupExercise("Exercise-2", "lesson2", () => {
-        const data = [{ w: "Six hundred forty-two", n: 642 }, { w: "Three hundred eighty-nine", n: 389 }, { w: "Two hundred seventy-six", n: 276 }];
-        const r = data[Math.floor(Math.random() * data.length)]; return { question: r.w, answer: r.n };
-    });
+    setupExercise("Exercise-2", "lesson2", () => randomWordQuestion());
     setupExercise("Exercise-3", "lesson3", () => {
         let n = Math.floor(Math.random() * 10); let m = [10, 100, 1000][Math.floor(Math.random() * 3)];
         return { question: `${n} × ${m}`, answer: n * m };
@@ -398,7 +426,7 @@ document.addEventListener("DOMContentLoaded", function () {
         function generateQuestion() {
             let type = Math.floor(Math.random() * 4);
             if (type === 0) { let n = Math.floor(Math.random() * 999) + 1; showNumber(final, n); return { question: "Type the number shown", answer: n, blocks: true }; }
-            if (type === 1) { const data = [{ w: "Six hundred forty-two", n: 642 }, { w: "Three hundred eighty-nine", n: 389 }, { w: "Two hundred seventy-six", n: 276 }]; let r = data[Math.floor(Math.random() * data.length)]; return { question: r.w, answer: r.n }; }
+            if (type === 1) { return randomWordQuestion(); }
             if (type === 2) { let n = Math.floor(Math.random() * 10); let m = [10, 100, 1000][Math.floor(Math.random() * 3)]; return { question: `${n} × ${m}`, answer: n * m }; }
             let m = [10, 100, 1000][Math.floor(Math.random() * 3)]; let n = m * Math.floor(Math.random() * 10); return { question: `${n} ÷ ${m}`, answer: n / m };
         }
