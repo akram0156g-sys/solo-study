@@ -496,8 +496,8 @@ if (window.location.pathname.includes('multiplication-division')) {
   function addXP(amount) {
     let xp = parseInt(localStorage.getItem('xp') || '0') + amount;
     localStorage.setItem('xp', xp);
-    const el = document.getElementById('xp-display');
-    if (el) el.textContent = 'XP: ' + xp;
+    const el = document.getElementById('xp-count');
+    if (el) el.textContent = xp;
   }
 
   function confetti() {
@@ -513,13 +513,18 @@ if (window.location.pathname.includes('multiplication-division')) {
     }
   }
 
+  // ── showSection: matches your HTML content-box IDs ────────────────────
   function showSection(id) {
-    document.querySelectorAll('.lesson-section').forEach(s => s.classList.add('hidden'));
+    document.querySelectorAll('.content-box').forEach(s => s.classList.add('hidden'));
     const el = document.getElementById(id);
-    if (el) { el.classList.remove('hidden'); window.scrollTo(0,0); }
+    if (el) { el.classList.remove('hidden'); window.scrollTo(0, 0); }
   }
 
   function showFinal() {
+    if (completedCount() < 4) {
+      alert('Complete all 4 exercises first to unlock the Final Review!');
+      return;
+    }
     setupFinalReview();
     showSection('final-review');
   }
@@ -528,273 +533,137 @@ if (window.location.pathname.includes('multiplication-division')) {
 
   let progress = JSON.parse(localStorage.getItem('lesson-' + lessonName) || '{"xp":0,"done":0}');
 
+  function completedCount() {
+    let count = 0;
+    for (let i = 1; i <= 4; i++) { if (progress['ex' + i + 'done']) count++; }
+    return count;
+  }
+
   function updateProgress(num) {
     const key = 'ex' + num + 'done';
     if (!progress[key]) {
       progress[key] = true;
-      progress.done = (progress.done || 0) + 1;
-      progress.xp   = (progress.xp   || 0) + 25;
+      progress.done = completedCount();
+      progress.xp   = (progress.xp || 0) + 25;
       localStorage.setItem('lesson-' + lessonName, JSON.stringify(progress));
     }
-    if (progress.done >= 4) showFeedbackPopup();
+    updateDashboard();
+    if (completedCount() >= 4) showFeedbackPopup();
+  }
+
+  function updateDashboard() {
+    const done  = completedCount();
+    const xp    = parseInt(localStorage.getItem('xp') || '0');
+    const level = Math.floor(xp / 100) + 1;
+    const score = progress.xp || 0;
+
+    const xpEl    = document.getElementById('xp-count');
+    const lvlEl   = document.getElementById('level-count');
+    const scoreEl = document.getElementById('score-count');
+    const fillEl  = document.getElementById('progress-fill');
+    const labelEl = document.getElementById('progress-label');
+
+    if (xpEl)    xpEl.textContent    = xp;
+    if (lvlEl)   lvlEl.textContent   = level;
+    if (scoreEl) scoreEl.textContent = score;
+    if (fillEl)  fillEl.style.width  = (done / 4 * 100) + '%';
+    if (labelEl) labelEl.textContent = done + ' / 4 complete';
   }
 
   function finishExercise(num) {
     confetti();
     addXP(25);
     updateProgress(num);
-    const doneEl = document.getElementById('ex' + num + '-done');
-    const qArea  = document.getElementById('ex' + num + '-area');
-    if (qArea)  qArea.classList.add('hidden');
-    if (doneEl) doneEl.classList.remove('hidden');
-  }
-
-  // ── Flashcard data ─────────────────────────────────────────────────────
-
-  const flashcards = {
-    1: [ // 3-digit × 1-digit
-      {
-        q: '214 × 3 = ?',
-        steps: [
-          '① Ones: 4 × 3 = 12 → write 2, carry 1',
-          '② Tens: 1 × 3 = 3, + 1 carried = 4 → write 4',
-          '③ Hundreds: 2 × 3 = 6 → write 6'
-        ],
-        a: '214 × 3 = <strong>642</strong> ✓'
-      },
-      {
-        q: '135 × 4 = ?',
-        steps: [
-          '① Ones: 5 × 4 = 20 → write 0, carry 2',
-          '② Tens: 3 × 4 = 12, + 2 carried = 14 → write 4, carry 1',
-          '③ Hundreds: 1 × 4 = 4, + 1 carried = 5 → write 5'
-        ],
-        a: '135 × 4 = <strong>540</strong> ✓'
-      },
-      {
-        q: '253 × 5 = ?',
-        steps: [
-          '① Ones: 3 × 5 = 15 → write 5, carry 1',
-          '② Tens: 5 × 5 = 25, + 1 carried = 26 → write 6, carry 2',
-          '③ Hundreds: 2 × 5 = 10, + 2 carried = 12 → write 12'
-        ],
-        a: '253 × 5 = <strong>1265</strong> ✓'
-      },
-      {
-        q: '312 × 7 = ?',
-        steps: [
-          '① Ones: 2 × 7 = 14 → write 4, carry 1',
-          '② Tens: 1 × 7 = 7, + 1 carried = 8 → write 8',
-          '③ Hundreds: 3 × 7 = 21 → write 21'
-        ],
-        a: '312 × 7 = <strong>2184</strong> ✓'
-      },
-      {
-        q: '426 × 8 = ?',
-        steps: [
-          '① Ones: 6 × 8 = 48 → write 8, carry 4',
-          '② Tens: 2 × 8 = 16, + 4 carried = 20 → write 0, carry 2',
-          '③ Hundreds: 4 × 8 = 32, + 2 carried = 34 → write 34'
-        ],
-        a: '426 × 8 = <strong>3408</strong> ✓'
-      }
-    ],
-    2: [ // 2-digit × 2-digit
-      {
-        q: '12 × 11 = ?',
-        steps: [
-          '① Multiply by ones digit (1): 12 × 1 = 12',
-          '② Multiply by tens digit (1): 12 × 10 = 120',
-          '③ Add the two rows: 12 + 120 = 132'
-        ],
-        a: '12 × 11 = <strong>132</strong> ✓'
-      },
-      {
-        q: '24 × 13 = ?',
-        steps: [
-          '① Multiply by ones digit (3): 24 × 3 = 72',
-          '② Multiply by tens digit (1): 24 × 10 = 240',
-          '③ Add the two rows: 72 + 240 = 312'
-        ],
-        a: '24 × 13 = <strong>312</strong> ✓'
-      },
-      {
-        q: '35 × 21 = ?',
-        steps: [
-          '① Multiply by ones digit (1): 35 × 1 = 35',
-          '② Multiply by tens digit (2): 35 × 20 = 700',
-          '③ Add the two rows: 35 + 700 = 735'
-        ],
-        a: '35 × 21 = <strong>735</strong> ✓'
-      },
-      {
-        q: '47 × 23 = ?',
-        steps: [
-          '① Multiply by ones digit (3): 47 × 3 = 141',
-          '② Multiply by tens digit (2): 47 × 20 = 940',
-          '③ Add the two rows: 141 + 940 = 1081'
-        ],
-        a: '47 × 23 = <strong>1081</strong> ✓'
-      },
-      {
-        q: '56 × 34 = ?',
-        steps: [
-          '① Multiply by ones digit (4): 56 × 4 = 224',
-          '② Multiply by tens digit (3): 56 × 30 = 1680',
-          '③ Add the two rows: 224 + 1680 = 1904'
-        ],
-        a: '56 × 34 = <strong>1904</strong> ✓'
-      }
-    ],
-    3: [ // Division – no remainder
-      {
-        q: '84 ÷ 4 = ?',
-        steps: [
-          '① How many 4s in 8? → 2. Write 2 above the tens',
-          '② 2 × 4 = 8. Subtract: 8 − 8 = 0. Bring down 4',
-          '③ How many 4s in 4? → 1. Write 1 above the ones'
-        ],
-        a: '84 ÷ 4 = <strong>21</strong> ✓'
-      },
-      {
-        q: '126 ÷ 6 = ?',
-        steps: [
-          '① How many 6s in 12? → 2. Write 2 above the tens',
-          '② 2 × 6 = 12. Subtract: 12 − 12 = 0. Bring down 6',
-          '③ How many 6s in 6? → 1. Write 1 above the ones'
-        ],
-        a: '126 ÷ 6 = <strong>21</strong> ✓'
-      },
-      {
-        q: '252 ÷ 7 = ?',
-        steps: [
-          '① How many 7s in 25? → 3 (3×7=21). Write 3 above tens',
-          '② 3 × 7 = 21. Subtract: 25 − 21 = 4. Bring down 2 → 42',
-          '③ How many 7s in 42? → 6 (6×7=42). Write 6 above ones'
-        ],
-        a: '252 ÷ 7 = <strong>36</strong> ✓'
-      },
-      {
-        q: '504 ÷ 8 = ?',
-        steps: [
-          '① How many 8s in 50? → 6 (6×8=48). Write 6 above tens',
-          '② 6 × 8 = 48. Subtract: 50 − 48 = 2. Bring down 4 → 24',
-          '③ How many 8s in 24? → 3 (3×8=24). Write 3 above ones'
-        ],
-        a: '504 ÷ 8 = <strong>63</strong> ✓'
-      },
-      {
-        q: '945 ÷ 9 = ?',
-        steps: [
-          '① How many 9s in 9? → 1. Write 1 above hundreds. Remainder 0. Bring down 4 → 04',
-          '② How many 9s in 4? → 0. Write 0 above tens. Bring down 5 → 45',
-          '③ How many 9s in 45? → 5 (5×9=45). Write 5 above ones'
-        ],
-        a: '945 ÷ 9 = <strong>105</strong> ✓'
-      }
-    ],
-    4: [ // Division – with remainders
-      {
-        q: '17 ÷ 5 = ?',
-        steps: [
-          '① How many 5s fit in 17? → 3 (3 × 5 = 15)',
-          '② Multiply: 3 × 5 = 15. Subtract: 17 − 15 = 2',
-          '③ 2 is less than 5, so 2 is the remainder'
-        ],
-        a: '17 ÷ 5 = <strong>3 R 2</strong> ✓'
-      },
-      {
-        q: '25 ÷ 4 = ?',
-        steps: [
-          '① How many 4s fit in 25? → 6 (6 × 4 = 24)',
-          '② Multiply: 6 × 4 = 24. Subtract: 25 − 24 = 1',
-          '③ 1 is less than 4, so 1 is the remainder'
-        ],
-        a: '25 ÷ 4 = <strong>6 R 1</strong> ✓'
-      },
-      {
-        q: '47 ÷ 6 = ?',
-        steps: [
-          '① How many 6s fit in 47? → 7 (7 × 6 = 42)',
-          '② Multiply: 7 × 6 = 42. Subtract: 47 − 42 = 5',
-          '③ 5 is less than 6, so 5 is the remainder'
-        ],
-        a: '47 ÷ 6 = <strong>7 R 5</strong> ✓'
-      },
-      {
-        q: '83 ÷ 9 = ?',
-        steps: [
-          '① How many 9s fit in 83? → 9 (9 × 9 = 81)',
-          '② Multiply: 9 × 9 = 81. Subtract: 83 − 81 = 2',
-          '③ 2 is less than 9, so 2 is the remainder'
-        ],
-        a: '83 ÷ 9 = <strong>9 R 2</strong> ✓'
-      },
-      {
-        q: '100 ÷ 7 = ?',
-        steps: [
-          '① How many 7s in 10? → 1 (1×7=7). Remainder 3. Bring down 0 → 30',
-          '② How many 7s in 30? → 4 (4×7=28). Remainder 2',
-          '③ 2 is less than 7, so 2 is the remainder → quotient is 14'
-        ],
-        a: '100 ÷ 7 = <strong>14 R 2</strong> ✓'
-      }
-    ]
-  };
-
-  // ── Flashcard engine ───────────────────────────────────────────────────
-
-  const fcState = { 1:{card:0,step:0}, 2:{card:0,step:0}, 3:{card:0,step:0}, 4:{card:0,step:0} };
-
-  function loadCard(n) {
-    const card = flashcards[n][fcState[n].card];
-    fcState[n].step = 0;
-
-    const qEl  = document.getElementById('fc' + n + '-question');
-    const sEl  = document.getElementById('fc' + n + '-steps');
-    const aEl  = document.getElementById('fc' + n + '-answer');
-    const btn  = document.getElementById('fc' + n + '-btn');
-
-    if (qEl) qEl.textContent = card.q;
-    if (sEl) sEl.innerHTML = '';
-    if (aEl) { aEl.innerHTML = ''; aEl.classList.add('hidden'); }
-    if (btn) {
-      btn.textContent = 'Next Step →';
-      btn.style.background = '';
-      btn.style.color = '';
+    // Show a done message inside the exercise box
+    const exDiv = document.getElementById('exercise-' + num);
+    if (exDiv) {
+      exDiv.innerHTML = `
+        <div style="text-align:center;padding:1.5rem 0;">
+          <p style="font-size:1.3rem;font-weight:800;color:#27ae60;">🎉 Exercise ${num} Complete!</p>
+          <p style="color:#555;margin-top:0.5rem;">+25 XP earned!</p>
+        </div>`;
     }
   }
 
-  function fcStep(n) {
-    const state = fcState[n];
-    const card  = flashcards[n][state.card];
-    const btn   = document.getElementById('fc' + n + '-btn');
+  // ── Flashcard engine ───────────────────────────────────────────────────
+  // Your HTML uses static fc-step divs with class "hidden" — we reveal them one by one
 
-    // "Next Card →" was clicked — load next card
-    if (state.step >= card.steps.length) {
-      state.card = (state.card + 1) % flashcards[n].length;
-      loadCard(n);
+  const fcState = {
+    1: { card: 0, step: 0 },
+    2: { card: 0, step: 0 },
+    3: { card: 0, step: 0 },
+    4: { card: 0, step: 0 }
+  };
+
+  function getSlides(n) {
+    return document.querySelectorAll(`#fc${n}-container .flashcard-slide`);
+  }
+
+  function loadCard(n) {
+    const slides = getSlides(n);
+    slides.forEach((slide, i) => {
+      slide.classList.toggle('active', i === 0);
+      // Reset all steps to hidden
+      slide.querySelectorAll('.fc-step').forEach(s => s.classList.add('hidden'));
+    });
+    fcState[n].card = 0;
+    fcState[n].step = 0;
+
+    const btn = document.getElementById('fc' + n + '-btn');
+    if (btn) {
+      btn.textContent = 'Next Step →';
+      btn.className = 'fc-step-btn';
+    }
+    updateFcCounter(n);
+  }
+
+  function updateFcCounter(n) {
+    const slides  = getSlides(n);
+    const counter = document.getElementById('fc' + n + '-counter');
+    if (counter) counter.textContent = `Card ${fcState[n].card + 1} of ${slides.length}`;
+  }
+
+  function fcStep(n) {
+    const slides      = getSlides(n);
+    const state       = fcState[n];
+    const activeSlide = slides[state.card];
+    if (!activeSlide) return;
+
+    const steps   = activeSlide.querySelectorAll('.fc-step:not(.fc-answer)');
+    const answer  = activeSlide.querySelector('.fc-answer');
+    const btn     = document.getElementById('fc' + n + '-btn');
+
+    // If answer already shown → go to next card
+    if (answer && !answer.classList.contains('hidden')) {
+      // Move to next card
+      state.card = (state.card + 1) % slides.length;
+      state.step = 0;
+
+      slides.forEach((slide, i) => {
+        slide.classList.toggle('active', i === state.card);
+        slide.querySelectorAll('.fc-step').forEach(s => s.classList.add('hidden'));
+      });
+
+      if (btn) {
+        btn.textContent = 'Next Step →';
+        btn.className = 'fc-step-btn';
+      }
+      updateFcCounter(n);
       return;
     }
 
     // Reveal next step
-    const sEl = document.getElementById('fc' + n + '-steps');
-    if (sEl) {
-      const div = document.createElement('div');
-      div.className = 'fc-step';
-      div.textContent = card.steps[state.step];
-      sEl.appendChild(div);
+    if (state.step < steps.length) {
+      steps[state.step].classList.remove('hidden');
+      state.step++;
     }
-    state.step++;
 
-    // All steps shown → reveal answer + flip button
-    if (state.step >= card.steps.length) {
-      const aEl = document.getElementById('fc' + n + '-answer');
-      if (aEl) { aEl.innerHTML = card.a; aEl.classList.remove('hidden'); }
+    // All steps shown → reveal answer
+    if (state.step >= steps.length) {
+      if (answer) answer.classList.remove('hidden');
       if (btn) {
         btn.textContent = 'Next Card →';
-        btn.style.background = '#2ecc71';
-        btn.style.color = '#fff';
+        btn.className = 'fc-step-btn done-btn';
       }
     }
   }
@@ -826,39 +695,56 @@ if (window.location.pathname.includes('multiplication-division')) {
   }
 
   // ── Exercise state ─────────────────────────────────────────────────────
+  // Your HTML uses: #exercise-1 > .question, input, .check-btn, .feedback, .dots
 
-  const exGen   = { 1: genEx1, 2: genEx2, 3: genEx3, 4: genEx4 };
-  const exCount = { 1: 0, 2: 0, 3: 0, 4: 0 };
-  const exScore = { 1: 0, 2: 0, 3: 0, 4: 0 };
-  const exTotal = 5;
+  const exGen    = { 1: genEx1, 2: genEx2, 3: genEx3, 4: genEx4 };
+  const exCount  = { 1: 0, 2: 0, 3: 0, 4: 0 };
+  const exAttempts = { 1: 0, 2: 0, 3: 0, 4: 0 };
+  const exTotal  = 5;
+  const maxAttempts = 3;
   const currentQ = {};
 
   function setupExercise(num) {
-    exCount[num] = 0;
-    exScore[num] = 0;
+    exCount[num]  = 0;
+    exAttempts[num] = 0;
     nextQuestion(num);
+  }
+
+  function getExEl(num, selector) {
+    const container = document.getElementById('exercise-' + num);
+    return container ? container.querySelector(selector) : null;
   }
 
   function nextQuestion(num) {
     exCount[num]++;
-    currentQ[num] = exGen[num]();
+    exAttempts[num] = 0;
+    currentQ[num]   = exGen[num]();
 
-    const qEl   = document.getElementById('ex' + num + '-question');
-    const input = document.getElementById('ex' + num + '-answer');
-    const fb    = document.getElementById('ex' + num + '-feedback');
-    const prog  = document.getElementById('ex' + num + '-progress');
-    const hint  = document.getElementById('ex' + num + '-hint');
+    const qEl   = getExEl(num, '.question');
+    const input = getExEl(num, 'input');
+    const fb    = getExEl(num, '.feedback');
+    const dots  = getExEl(num, '.dots');
 
-    if (qEl)   qEl.textContent   = currentQ[num].q;
+    if (qEl)   qEl.textContent  = currentQ[num].q;
     if (input) { input.value = ''; input.focus(); }
     if (fb)    { fb.textContent = ''; fb.className = 'feedback'; }
-    if (prog)  prog.textContent  = `Question ${exCount[num]} of ${exTotal}`;
-    if (hint)  hint.textContent  = (num === 4) ? 'Write your answer as: Q R R  (e.g. 3 R 2)' : '';
+    if (dots)  renderDots(dots, 0);
+  }
+
+  function renderDots(dotsEl, used) {
+    dotsEl.innerHTML = '';
+    for (let i = 0; i < maxAttempts; i++) {
+      const dot = document.createElement('span');
+      dot.style.cssText = `display:inline-block;width:12px;height:12px;border-radius:50%;
+        margin:0 3px;background:${i < used ? '#e74c3c' : '#c0b0e0'};`;
+      dotsEl.appendChild(dot);
+    }
   }
 
   function checkAnswer(num) {
-    const input = document.getElementById('ex' + num + '-answer');
-    const fb    = document.getElementById('ex' + num + '-feedback');
+    const input = getExEl(num, 'input');
+    const fb    = getExEl(num, '.feedback');
+    const dots  = getExEl(num, '.dots');
     if (!input) return;
 
     const raw  = input.value.trim();
@@ -866,26 +752,46 @@ if (window.location.pathname.includes('multiplication-division')) {
     let correct = false;
 
     if (num === 4) {
-      // Accept flexible spacing: "3 R 2", "3R2", "3 r 2", etc.
-      const norm = raw.toUpperCase().replace(/\s+/g, ' ').replace(/\bR\b/, 'R').trim();
+      const norm = raw.toUpperCase().replace(/\s+/g, ' ').trim();
       const exp  = String(prob.a).toUpperCase();
-      correct = norm === exp;
+      correct    = norm === exp;
     } else {
       correct = parseInt(raw, 10) === prob.a;
     }
 
-    if (correct) {
-      exScore[num]++;
-      if (fb) { fb.textContent = '✓ Correct!'; fb.className = 'feedback correct'; }
-    } else {
-      if (fb) { fb.textContent = `✗ Not quite — answer was ${prob.a}`; fb.className = 'feedback incorrect'; }
-    }
+    exAttempts[num]++;
+    if (dots) renderDots(dots, exAttempts[num]);
 
-    const delay = correct ? 700 : 1400;
-    setTimeout(() => {
-      if (exCount[num] >= exTotal) finishExercise(num);
-      else nextQuestion(num);
-    }, delay);
+    if (correct) {
+      if (fb) { fb.textContent = '✓ Correct!'; fb.className = 'feedback correct'; }
+      const delay = 700;
+      setTimeout(() => {
+        if (exCount[num] >= exTotal) finishExercise(num);
+        else nextQuestion(num);
+      }, delay);
+    } else if (exAttempts[num] >= maxAttempts) {
+      if (fb) { fb.textContent = `✗ The answer was ${prob.a}`; fb.className = 'feedback incorrect'; }
+      setTimeout(() => {
+        if (exCount[num] >= exTotal) finishExercise(num);
+        else nextQuestion(num);
+      }, 1800);
+    } else {
+      if (fb) { fb.textContent = `✗ Try again! (${maxAttempts - exAttempts[num]} left)`; fb.className = 'feedback incorrect'; }
+      input.value = '';
+      input.focus();
+    }
+  }
+
+  // Wire up check buttons via event delegation
+  function initExerciseButtons() {
+    for (let num = 1; num <= 4; num++) {
+      const container = document.getElementById('exercise-' + num);
+      if (!container) continue;
+      const btn   = container.querySelector('.check-btn');
+      const input = container.querySelector('input');
+      if (btn)   btn.addEventListener('click',   () => checkAnswer(num));
+      if (input) input.addEventListener('keydown', e => { if (e.key === 'Enter') checkAnswer(num); });
+    }
   }
 
   // ── Final Review ───────────────────────────────────────────────────────
@@ -903,27 +809,34 @@ if (window.location.pathname.includes('multiplication-division')) {
       const j = Math.floor(Math.random() * (i + 1));
       [finalQs[i], finalQs[j]] = [finalQs[j], finalQs[i]];
     }
+    // Wire up check button
+    const checkBtn = document.getElementById('check-btn');
+    const ansInput = document.getElementById('answer');
+    if (checkBtn) checkBtn.onclick = checkFinal;
+    if (ansInput) ansInput.onkeydown = e => { if (e.key === 'Enter') checkFinal(); };
     showFinalQuestion();
   }
 
   function showFinalQuestion() {
     const q     = finalQs[finalIdx];
-    const qEl   = document.getElementById('final-question');
+    const qEl   = document.getElementById('current-question');
     const input = document.getElementById('answer');
-    const fb    = document.getElementById('final-feedback');
-    const prog  = document.getElementById('final-progress');
-    const hint  = document.getElementById('final-hint');
+    const fb    = document.getElementById('review-feedback');
+    const prog  = document.getElementById('review-progress');
 
     if (qEl)   qEl.textContent  = q.q;
     if (input) { input.value = ''; input.focus(); }
     if (fb)    { fb.textContent = ''; fb.className = 'feedback'; }
     if (prog)  prog.textContent = `Question ${finalIdx + 1} of ${finalQs.length}`;
-    if (hint)  hint.textContent = (q.type === 4) ? 'Write your answer as: Q R R  (e.g. 3 R 2)' : '';
+
+    // Show hint for remainder questions
+    const hint = document.getElementById('answer');
+    if (input) input.placeholder = (q.type === 4) ? 'e.g. 14 R 2' : 'Your answer';
   }
 
   function checkFinal() {
     const input = document.getElementById('answer');
-    const fb    = document.getElementById('final-feedback');
+    const fb    = document.getElementById('review-feedback');
     if (!input) return;
 
     const raw = input.value.trim();
@@ -932,7 +845,7 @@ if (window.location.pathname.includes('multiplication-division')) {
 
     if (q.type === 4) {
       const norm = raw.toUpperCase().replace(/\s+/g, ' ').trim();
-      correct = norm === String(q.a).toUpperCase();
+      correct    = norm === String(q.a).toUpperCase();
     } else {
       correct = parseInt(raw, 10) === q.a;
     }
@@ -957,62 +870,64 @@ if (window.location.pathname.includes('multiplication-division')) {
     const section = document.getElementById('final-review');
     if (section) {
       section.innerHTML = `
-        <div class="lesson-card" style="text-align:center">
-          <h2>🏆 Unit Complete!</h2>
-          <p>You scored <strong>${finalScore} / ${finalQs.length}</strong> (${pct}%)</p>
-          <p>+50 XP earned! Keep it up! 🌟</p>
-          <button onclick="showSection('lesson-hub')">← Back to Lessons</button>
+        <div style="text-align:center;padding:2rem;">
+          <h2 style="font-size:2rem;margin-bottom:1rem;">🏆 Unit Complete!</h2>
+          <p style="font-size:1.2rem;">You scored <strong>${finalScore} / ${finalQs.length}</strong> (${pct}%)</p>
+          <p style="color:#6a4c93;margin-top:0.5rem;font-weight:600;">+50 XP earned! Keep it up! 🌟</p>
         </div>`;
     }
     showFeedbackPopup();
   }
 
   // ── Feedback popup ─────────────────────────────────────────────────────
+  // Matches your HTML: #feedback-overlay, #feedback-step1/2/3
 
   function showFeedbackPopup() {
-    const popup = document.getElementById('feedback-popup');
-    if (popup) popup.classList.remove('hidden');
+    const overlay = document.getElementById('feedback-overlay');
+    if (overlay) overlay.classList.remove('hidden');
+    // Reset to step 1
+    document.getElementById('feedback-step1').classList.remove('hidden');
+    document.getElementById('feedback-step2').classList.add('hidden');
+    document.getElementById('feedback-step3').classList.add('hidden');
   }
 
   function feedbackYes() {
-    document.getElementById('feedback-yes-section').classList.add('hidden');
-    document.getElementById('feedback-thanks').classList.remove('hidden');
     saveFeedback(true, null, '');
+    document.getElementById('feedback-step1').classList.add('hidden');
+    document.getElementById('feedback-step3').classList.remove('hidden');
   }
 
   function feedbackNo() {
-    document.getElementById('feedback-yes-section').classList.add('hidden');
-    document.getElementById('feedback-no-section').classList.remove('hidden');
+    document.getElementById('feedback-step1').classList.add('hidden');
+    document.getElementById('feedback-step2').classList.remove('hidden');
   }
 
   function submitFeedback() {
     const reasons = {};
     ['tooHard','tooEasy','boring','confusing','other'].forEach(r => {
-      const el = document.getElementById('reason-' + r);
+      const el = document.querySelector(`.reason-checkboxes input[value="${r}"]`);
       if (el && el.checked) reasons[r] = true;
     });
-    const textEl    = document.getElementById('feedback-text');
+    const textEl    = document.getElementById('other-text');
     const otherText = textEl ? textEl.value.trim() : '';
     saveFeedback(false, reasons, otherText);
-    document.getElementById('feedback-no-section').classList.add('hidden');
-    document.getElementById('feedback-thanks').classList.remove('hidden');
+    document.getElementById('feedback-step2').classList.add('hidden');
+    document.getElementById('feedback-step3').classList.remove('hidden');
   }
 
   function closeFeedback() {
-    const popup = document.getElementById('feedback-popup');
-    if (popup) popup.classList.add('hidden');
+    const overlay = document.getElementById('feedback-overlay');
+    if (overlay) overlay.classList.add('hidden');
   }
 
   function saveFeedback(liked, reasons, otherText) {
     if (typeof db === 'undefined') return;
     const ref = db.collection('feedback').doc(lessonName);
     ref.get().then(doc => {
-      const defaults = { totalYes:0, totalNo:0,
-        reasons:{ tooHard:0, tooEasy:0, boring:0, confusing:0, other:0 },
-        otherResponses:[] };
+      const defaults = { totalYes: 0, totalNo: 0,
+        reasons: { tooHard: 0, tooEasy: 0, boring: 0, confusing: 0, other: 0 },
+        otherResponses: [] };
       const data = doc.exists ? doc.data() : defaults;
-
-      // Ensure sub-objects exist (defensive)
       if (!data.reasons)        data.reasons = defaults.reasons;
       if (!data.otherResponses) data.otherResponses = [];
 
@@ -1020,11 +935,7 @@ if (window.location.pathname.includes('multiplication-division')) {
         data.totalYes++;
       } else {
         data.totalNo++;
-        if (reasons) {
-          Object.keys(reasons).forEach(r => {
-            if (r in data.reasons) data.reasons[r]++;
-          });
-        }
+        if (reasons) Object.keys(reasons).forEach(r => { if (r in data.reasons) data.reasons[r]++; });
         if (otherText) data.otherResponses.push(otherText);
       }
       ref.set(data);
@@ -1033,22 +944,26 @@ if (window.location.pathname.includes('multiplication-division')) {
 
   // ── Expose to HTML onclick handlers ───────────────────────────────────
 
-  window.fcStep          = fcStep;
-  window.showSection     = showSection;
-  window.showFinal       = showFinal;
-  window.setupExercise   = setupExercise;
-  window.checkAnswer     = checkAnswer;
-  window.checkFinal      = checkFinal;
-  window.feedbackYes     = feedbackYes;
-  window.feedbackNo      = feedbackNo;
-  window.submitFeedback  = submitFeedback;
-  window.closeFeedback   = closeFeedback;
+  window.fcStep         = fcStep;
+  window.showSection    = showSection;
+  window.showFinal      = showFinal;
+  window.setupExercise  = setupExercise;
+  window.checkAnswer    = checkAnswer;
+  window.checkFinal     = checkFinal;
+  window.feedbackYes    = feedbackYes;
+  window.feedbackNo     = feedbackNo;
+  window.submitFeedback = submitFeedback;
+  window.closeFeedback  = closeFeedback;
 
-  // ── Init: load first card for each flashcard set ───────────────────────
+  // ── Init ───────────────────────────────────────────────────────────────
 
   document.addEventListener('DOMContentLoaded', () => {
-    for (let n = 1; n <= 4; n++) loadCard(n);
+    updateDashboard();
+    for (let n = 1; n <= 4; n++) {
+      setupExercise(n);
+      loadCard(n);
+    }
+    initExerciseButtons();
   });
 
 } // end Unit 2 guard
-// ============================================================
