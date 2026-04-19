@@ -1,9 +1,14 @@
 /* ============================================================
-   SOLO STUDY — Shared Lesson Styles
+   SOLO STUDY â€” style-2.css
+   Shared stylesheet for lesson units (Multiplication & Division etc.)
    ============================================================ */
 
-/* ── Reset & Base ─────────────────────────────────────────── */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+/* â”€â”€ Reset & Base â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
 body {
   font-family: 'Segoe UI', Arial, sans-serif;
@@ -12,248 +17,285 @@ body {
   min-height: 100vh;
 }
 
-/* ── Utility ──────────────────────────────────────────────── */
 .hidden { display: none !important; }
 
-/* ── Navbar ───────────────────────────────────────────────── */
-.navbar {
-  background: #1a1a2e;
-  padding: 0.9rem 2rem;
+/* â”€â”€ Navbar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* Same dark green style as Unit 1 (.home-nav) */
+nav.navbar {
+  background: rgba(9, 14, 28, 0.97);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  padding: 0 2rem;
+  height: 58px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   position: sticky;
   top: 0;
-  z-index: 100;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  z-index: 1000;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.35);
+  gap: 1rem;
 }
 
-.navbar .logo {
-  font-size: 1.4rem;
+nav.navbar .logo {
+  font-size: 1.35rem;
   font-weight: 800;
-  color: #fff;
-  text-decoration: none;
-  letter-spacing: 1px;
+  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.3px;
+  cursor: default;
+  flex-shrink: 0;
 }
 
 .nav-links {
+  list-style: none;
   display: flex;
-  gap: 1.5rem;
+  gap: 0.2rem;
+  flex: 1;
 }
 
 .nav-links a {
-  color: #ccc;
   text-decoration: none;
-  font-size: 0.95rem;
-  transition: color 0.2s;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 500;
+  font-size: 0.88rem;
+  padding: 6px 12px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
 }
 
-.nav-links a:hover { color: #fff; }
+.nav-links a:hover {
+  color: #22c55e;
+  background: rgba(34, 197, 94, 0.1);
+}
 
 .nav-user {
   display: flex;
-  gap: 0.6rem;
+  gap: 0.5rem;
   align-items: center;
 }
 
 .nav-user button {
-  background: #6a4c93;
-  color: #fff;
-  padding: 0.35rem 1rem;
-  border-radius: 8px;
-  font-size: 0.9rem;
+  padding: 6px 14px;
+  font-size: 0.82rem;
   font-weight: 600;
+  font-family: inherit;
+  border-radius: 8px;
   border: none;
   cursor: pointer;
   transition: opacity 0.2s;
 }
 
-.nav-user button:hover { opacity: 0.85; }
+#profile-btn {
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.78);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
 
-/* ── Dashboard Bar ────────────────────────────────────────── */
+#logout-btn {
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.nav-user button:hover { opacity: 0.82; }
+
+/* â”€â”€ Dashboard Bar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .dashboard-bar {
-  background: #1a1a2e;
+  background: #fff;
+  border-bottom: 1px solid #dde4f5;
+  padding: 0.55rem 2rem;
   display: flex;
   align-items: center;
-  gap: 1.5rem;
-  padding: 0.7rem 2rem;
-  flex-wrap: wrap;
+  gap: 1rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
 }
 
 .dash-card {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: #2d2d4e;
-  border-radius: 10px;
-  padding: 0.4rem 1.1rem;
-  min-width: 60px;
+  background: #f0f4ff;
+  border-radius: 8px;
+  padding: 4px 14px;
+  min-width: 54px;
 }
 
 .dash-label {
-  font-size: 0.72rem;
-  color: #aaa;
+  font-size: 0.65rem;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.5px;
+  color: #999;
 }
 
-.dash-card span:last-child {
+.dash-card span:not(.dash-label) {
   font-size: 1.1rem;
   font-weight: 800;
-  color: #fff;
+  color: #1a1a2e;
 }
 
 .dash-progress {
   display: flex;
   flex-direction: column;
-  gap: 0.3rem;
+  gap: 3px;
   flex: 1;
-  min-width: 160px;
+  max-width: 220px;
 }
 
 .progress-bar {
-  background: #2d2d4e;
-  border-radius: 20px;
-  height: 10px;
+  width: 100%;
+  height: 7px;
+  background: #dde4f5;
+  border-radius: 50px;
   overflow: hidden;
 }
 
 .progress-fill {
-  background: #6a4c93;
   height: 100%;
   width: 0%;
-  border-radius: 20px;
-  transition: width 0.4s ease;
+  background: linear-gradient(90deg, #6a4c93, #1982c4);
+  border-radius: 50px;
+  transition: width 0.5s ease;
 }
 
 #progress-label {
-  font-size: 0.8rem;
-  color: #aaa;
+  font-size: 0.72rem;
+  color: #6a4c93;
+  font-weight: 700;
 }
 
-/* ── Main Layout ──────────────────────────────────────────── */
+/* â”€â”€ Main Layout â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .main-layout {
   display: flex;
-  min-height: calc(100vh - 110px);
+  min-height: calc(100vh - 103px); /* 58px nav + 45px dashboard */
 }
 
-/* ── Sidebar ──────────────────────────────────────────────── */
+/* â”€â”€ Sidebar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .sidebar {
-  width: 260px;
-  min-width: 220px;
+  width: 230px;
   background: #fff;
-  border-right: 2px solid #e0d8f5;
-  padding: 1.5rem 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  position: sticky;
-  top: 110px;
-  height: calc(100vh - 110px);
+  border-right: 1px solid #dde4f5;
+  padding: 1.4rem 0.9rem;
   overflow-y: auto;
+  flex-shrink: 0;
+  position: sticky;
+  top: 103px;
+  height: calc(100vh - 103px);
 }
 
 .sidebar-title {
-  font-size: 1.1rem;
-  font-weight: 800;
-  color: #1a1a2e;
-  margin-bottom: 0.1rem;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: #bbb;
+  padding: 0 8px;
+  margin-bottom: 2px;
 }
 
 .sidebar-subtitle {
-  font-size: 0.85rem;
-  color: #6a4c93;
-  font-weight: 600;
-  margin-bottom: 0.8rem;
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: #1a1a2e;
+  padding: 0 8px;
+  margin-bottom: 1.2rem;
 }
 
 .sidebar-group {
-  margin-bottom: 0.8rem;
+  margin-bottom: 0.5rem;
 }
 
 .sidebar-lesson-title {
-  font-size: 0.88rem;
+  font-size: 0.72rem;
   font-weight: 700;
-  color: #1a1a2e;
-  margin-bottom: 0.3rem;
-  padding: 0.3rem 0.5rem;
-  background: #f0f4ff;
-  border-radius: 6px;
+  color: #6a4c93;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  padding: 7px 8px 3px;
 }
 
 .sidebar-group ul {
   list-style: none;
-  padding-left: 0.6rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
+  padding: 0;
 }
 
-.sidebar-group ul li a {
+.sidebar-group li { padding: 0; }
+
+.sidebar-group a {
+  display: block;
+  padding: 5px 12px;
+  border-radius: 7px;
+  font-size: 0.86rem;
   color: #555;
   text-decoration: none;
-  font-size: 0.88rem;
-  padding: 0.25rem 0.5rem;
-  border-radius: 6px;
-  display: block;
   transition: background 0.15s, color 0.15s;
 }
 
-.sidebar-group ul li a:hover {
-  background: #e8e0f5;
+.sidebar-group a:hover {
+  background: #f0f4ff;
   color: #6a4c93;
 }
 
 .sidebar-final-link {
   display: block;
-  background: #6a4c93;
+  margin-top: 0.8rem;
+  padding: 9px 12px;
+  background: linear-gradient(135deg, #1a1a2e, #6a4c93);
   color: #fff !important;
-  text-decoration: none;
-  font-size: 0.95rem;
+  border-radius: 9px;
+  font-size: 0.9rem;
   font-weight: 700;
-  padding: 0.6rem 1rem;
-  border-radius: 10px;
+  text-decoration: none;
   text-align: center;
-  transition: background 0.2s;
-  margin-top: 0.5rem;
+  transition: opacity 0.2s;
+  box-shadow: 0 3px 10px rgba(106,76,147,0.3);
 }
 
-.sidebar-final-link:hover { background: #5a3d7a; }
+.sidebar-final-link:hover { opacity: 0.87; }
 
-/* ── Content Area ─────────────────────────────────────────── */
+/* â”€â”€ Content Area â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .content-area {
   flex: 1;
   padding: 2rem;
-  max-width: 800px;
+  background: #f0f4ff;
+  overflow-y: auto;
 }
 
+/* â”€â”€ Content Box â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .content-box {
   background: #fff;
-  border-radius: 14px;
+  border-radius: 16px;
   padding: 2rem;
-  margin-bottom: 1.5rem;
-  box-shadow: 0 4px 18px rgba(106,76,147,0.10);
-  animation: fadeIn 0.3s ease;
+  max-width: 700px;
+  margin: 0 auto;
+  box-shadow: 0 4px 18px rgba(106,76,147,0.09);
 }
 
 .content-box h2 {
-  font-size: 1.5rem;
-  margin-bottom: 0.8rem;
+  font-size: 1.4rem;
   color: #1a1a2e;
+  margin-bottom: 0.7rem;
+  font-weight: 800;
 }
 
-.content-box h3 {
-  font-size: 1.2rem;
-  margin-bottom: 0.8rem;
+.content-box > h3 {
+  font-size: 1.15rem;
   color: #6a4c93;
+  margin-bottom: 1rem;
+  font-weight: 700;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(8px); }
-  to   { opacity: 1; transform: translateY(0); }
+.content-box > p {
+  color: #555;
+  font-size: 0.95rem;
+  line-height: 1.6;
 }
 
-/* ── Video Wrapper ────────────────────────────────────────── */
+/* â”€â”€ Video Wrapper â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .video-wrapper {
   position: relative;
   padding-bottom: 56.25%;
@@ -271,18 +313,29 @@ body {
   border: none;
 }
 
-/* ── Flashcards ───────────────────────────────────────────── */
+/* â”€â”€ Flashcard Container â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .flashcard-container {
   background: #f8f6ff;
   border: 2px solid #d4c8f0;
   border-radius: 14px;
-  padding: 1.8rem;
+  padding: 1.6rem;
   margin: 1rem 0;
-  min-height: 220px;
+  min-height: 180px;
 }
 
-.flashcard-slide { display: none; }
-.flashcard-slide.active { display: block; }
+.flashcard-slide {
+  display: none;
+}
+
+.flashcard-slide.active {
+  display: block;
+  animation: slideIn 0.28s ease;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
 
 .flashcard-question {
   font-size: 1.5rem;
@@ -290,8 +343,8 @@ body {
   color: #1a1a2e;
   text-align: center;
   padding-bottom: 0.8rem;
-  margin-bottom: 0.8rem;
   border-bottom: 2px dashed #d4c8f0;
+  margin-bottom: 0.9rem;
 }
 
 .fc-steps {
@@ -300,74 +353,94 @@ body {
   gap: 0.5rem;
 }
 
+/* .fc-step, .fc-step.fc-answer, .fc-step-btn, .fc-step-btn.done-btn
+   are defined in the inline <style> block in the HTML.             */
+
 .fc-controls {
-  margin-top: 1rem;
   display: flex;
-  justify-content: flex-end;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.9rem;
 }
 
 .fc-counter {
-  text-align: right;
-  font-size: 0.85rem;
-  color: #888;
-  margin-top: 0.4rem;
+  font-size: 0.8rem;
+  color: #999;
+  font-weight: 600;
 }
 
-/* ── Exercise ─────────────────────────────────────────────── */
+/* â”€â”€ Exercise â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .exercise-info {
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   color: #666;
-  margin-bottom: 1rem;
+  margin-bottom: 1.2rem;
+  line-height: 1.5;
 }
 
-#exercise-1, #exercise-2, #exercise-3, #exercise-4 {
+#exercise-1,
+#exercise-2,
+#exercise-3,
+#exercise-4 {
   display: flex;
   flex-direction: column;
-  gap: 0.9rem;
   align-items: center;
+  gap: 0.9rem;
+  padding-top: 0.4rem;
 }
 
 .question {
-  font-size: 1.6rem;
+  font-size: 1.9rem;
   font-weight: 800;
   color: #1a1a2e;
   text-align: center;
-  padding: 1rem 0;
+  min-height: 2.5rem;
+  padding: 0.3rem 0;
 }
 
 input[type="number"],
 input[type="text"] {
   border: 2px solid #c0b0e0;
-  border-radius: 8px;
-  padding: 0.6rem 1rem;
+  border-radius: 9px;
+  padding: 0.6rem 1.1rem;
   font-size: 1.1rem;
   font-family: inherit;
   width: 200px;
   text-align: center;
   outline: none;
-  transition: border-color 0.2s;
+  background: #fff;
+  color: #1a1a2e;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 input[type="number"]:focus,
 input[type="text"]:focus {
   border-color: #6a4c93;
+  box-shadow: 0 0 0 3px rgba(106,76,147,0.12);
 }
 
 .check-btn {
   background: #1982c4;
   color: #fff;
-  padding: 0.65rem 1.4rem;
+  padding: 0.65rem 2rem;
   font-size: 1rem;
   font-weight: 700;
-  border-radius: 8px;
+  font-family: inherit;
+  border-radius: 9px;
   border: none;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.15s;
+  box-shadow: 0 3px 10px rgba(25,130,196,0.25);
 }
 
-.check-btn:hover { background: #1268a1; }
+.check-btn:hover  { opacity: 0.88; }
+.check-btn:active { transform: scale(0.97); }
 
+/* Feedback text (correct / incorrect) */
 .feedback {
   text-align: center;
-  font-size: 1.05rem;
+  font-size: 1rem;
   font-weight: 700;
   min-height: 1.4em;
 }
@@ -375,27 +448,51 @@ input[type="text"]:focus {
 .feedback.correct   { color: #27ae60; }
 .feedback.incorrect { color: #e74c3c; }
 
+/* Attempt dots */
 .dots {
   display: flex;
-  gap: 0.4rem;
+  gap: 7px;
   justify-content: center;
+  min-height: 16px;
 }
 
-/* ── Final Review ─────────────────────────────────────────── */
+/* Individual dots rendered by JS â€” base style */
+.dot {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: #d0c4e8;
+  display: inline-block;
+  transition: background 0.2s;
+}
+
+.dot.used { background: #e74c3c; }
+.dot.ok   { background: #27ae60; }
+
+/* â”€â”€ Final Review â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .review-area {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 1rem;
+  padding-top: 0.6rem;
+}
+
+#current-question {
+  font-size: 1.9rem;
+  font-weight: 800;
+  color: #1a1a2e;
+  text-align: center;
+  min-height: 2.5rem;
 }
 
 .review-progress {
-  font-size: 0.9rem;
+  font-size: 0.86rem;
   color: #6a4c93;
-  font-weight: 600;
+  font-weight: 700;
 }
 
-/* ── Feedback Overlay / Popup ─────────────────────────────── */
+/* â”€â”€ Feedback Popup â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .feedback-overlay {
   position: fixed;
   inset: 0;
@@ -404,117 +501,155 @@ input[type="text"]:focus {
   align-items: center;
   justify-content: center;
   z-index: 500;
-  animation: fadeIn 0.2s ease;
+  animation: slideIn 0.22s ease;
 }
 
 .feedback-popup {
   background: #fff;
   border-radius: 18px;
-  padding: 2.5rem 2rem;
-  max-width: 420px;
+  padding: 2.4rem 2rem;
+  max-width: 400px;
   width: 90%;
   box-shadow: 0 12px 40px rgba(0,0,0,0.25);
   text-align: center;
 }
 
-.feedback-popup h3 { font-size: 1.4rem; margin-bottom: 0.6rem; }
-.feedback-popup p  { color: #555; margin-bottom: 1.2rem; }
+.feedback-popup h3 {
+  font-size: 1.35rem;
+  color: #1a1a2e;
+  margin-bottom: 0.45rem;
+  font-weight: 800;
+}
+
+.feedback-popup p {
+  color: #666;
+  margin-bottom: 1.4rem;
+  font-size: 0.95rem;
+}
 
 .feedback-btns {
   display: flex;
   gap: 1rem;
   justify-content: center;
-  margin-bottom: 0.5rem;
 }
 
 .feedback-yes {
   background: #27ae60;
   color: #fff;
-  padding: 0.7rem 1.8rem;
+  padding: 0.7rem 1.6rem;
   font-size: 1rem;
   font-weight: 700;
-  border-radius: 8px;
+  font-family: inherit;
+  border-radius: 9px;
   border: none;
   cursor: pointer;
+  transition: opacity 0.2s;
 }
 
 .feedback-no {
   background: #e74c3c;
   color: #fff;
-  padding: 0.7rem 1.8rem;
+  padding: 0.7rem 1.6rem;
   font-size: 1rem;
   font-weight: 700;
-  border-radius: 8px;
+  font-family: inherit;
+  border-radius: 9px;
   border: none;
   cursor: pointer;
+  transition: opacity 0.2s;
 }
+
+.feedback-yes:hover,
+.feedback-no:hover { opacity: 0.84; }
 
 .reason-checkboxes {
   text-align: left;
   margin: 0.8rem 0 1rem;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.55rem;
 }
 
 .reason-checkboxes label {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  font-size: 0.97rem;
+  font-size: 0.94rem;
   cursor: pointer;
+  color: #333;
 }
 
 .reason-checkboxes input[type="checkbox"] {
   width: 16px;
   height: 16px;
   accent-color: #6a4c93;
+  cursor: pointer;
 }
 
 #other-text {
   width: 100%;
   border: 2px solid #c0b0e0;
-  border-radius: 8px;
+  border-radius: 9px;
   padding: 0.6rem;
   font-family: inherit;
-  font-size: 0.95rem;
+  font-size: 0.94rem;
   resize: vertical;
   margin-bottom: 1rem;
   outline: none;
+  min-height: 76px;
+  color: #1a1a2e;
+  transition: border-color 0.2s;
 }
 
 #other-text:focus { border-color: #6a4c93; }
 
-/* ── Generic Buttons ──────────────────────────────────────── */
-button {
-  cursor: pointer;
-  font-family: inherit;
-  border: none;
-  border-radius: 8px;
-  transition: opacity 0.2s, transform 0.15s;
+/* â”€â”€ Confetti â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+@keyframes fall {
+  0%   { transform: translateY(0) rotate(0deg);      opacity: 1; }
+  100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
 }
 
-button:hover  { opacity: 0.88; }
-button:active { transform: scale(0.97); }
+/* â”€â”€ Responsive â€” Tablet â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+@media (max-width: 900px) {
+  .sidebar { width: 200px; }
+  .content-area { padding: 1.4rem; }
+}
 
-/* ── Responsive ───────────────────────────────────────────── */
-@media (max-width: 768px) {
+/* â”€â”€ Responsive â€” Mobile â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+@media (max-width: 700px) {
+  nav.navbar { padding: 0 1rem; }
+
+  .nav-links { display: none; }   /* hide on mobile â€” add hamburger if needed */
+
   .main-layout { flex-direction: column; }
+
   .sidebar {
     width: 100%;
     height: auto;
     position: static;
     border-right: none;
-    border-bottom: 2px solid #e0d8f5;
+    border-bottom: 1px solid #dde4f5;
+    padding: 1rem;
+    overflow-y: visible;
   }
-  .content-area { padding: 1rem; }
-}
 
-@media (max-width: 600px) {
-  .navbar { padding: 0.7rem 1rem; flex-wrap: wrap; gap: 0.5rem; }
-  .nav-links { gap: 0.8rem; }
-  .content-box h2 { font-size: 1.2rem; }
+  .content-area { padding: 1rem; }
+
+  .dashboard-bar {
+    padding: 0.5rem 1rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .dash-progress { max-width: 100%; width: 100%; }
+
   .flashcard-question { font-size: 1.2rem; }
-  .question { font-size: 1.2rem; }
-  .dashboard-bar { gap: 0.8rem; padding: 0.6rem 1rem; }
+
+  #current-question,
+  .question { font-size: 1.4rem; }
+
+  .content-box { padding: 1.2rem; }
+
+  input[type="number"],
+  input[type="text"] { width: 100%; max-width: 240px; }
 }
