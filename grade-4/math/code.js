@@ -916,9 +916,11 @@ if (window.location.pathname.includes('multiplication-division')) {
   }
 
   function closeFeedback() {
-    const overlay = document.getElementById('feedback-overlay');
-    if (overlay) overlay.classList.add('hidden');
-  }
+    const o1 = document.getElementById('feedbackOverlay');
+    if (o1) o1.style.display = 'none';
+    const o2 = document.getElementById('feedback-overlay');
+    if (o2) o2.classList.add('hidden');
+}
 
   function saveFeedback(liked, reasons, otherText) {
     if (typeof db === 'undefined') return;
