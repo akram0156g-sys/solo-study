@@ -498,11 +498,12 @@ button:active { transform: scale(0.97); }
    FEEDBACK POPUP
    (overrides the inline dark styles in the HTML)
    ============================================================ */
+/* AFTER */
 #feedbackOverlay {
   position: fixed !important;
   inset: 0 !important;
   background: rgba(0, 0, 0, 0.55) !important;
-  display: flex !important;
+  display: flex;                    /* ← no !important — JS can now override it */
   align-items: center !important;
   justify-content: center !important;
   z-index: 9999 !important;
